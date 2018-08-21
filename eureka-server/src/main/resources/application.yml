@@ -1,0 +1,16 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: eureka-server
+  profiles:
+    include: eureka
+    #使用本地属性文件
+    active: native
+  cloud:
+    config:
+      label: master
+      server:
+        native:
+          search-locations: classpath:/modules-config/

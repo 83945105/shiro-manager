@@ -1,0 +1,48 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+#服务器
+server:
+  #端口号
+  port: 8887
+#开发环境配置
+web:
+  #文件上传路径
+  upload-path: D:/files/
+  #跨域
+  cors:
+    #是否允许
+    allow: true
+spring:
+  mvc:
+    #所有访问都经过静态资源路径
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
+  #数据库访问配置
+  datasource:
+    url: jdbc:mysql://192.168.0.112:3306/cloud_demo?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+    #使用 druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    tomcat:
+      driver-class-name: com.mysql.jdbc.Driver
+    #下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    #initialize: 50
+#集成mybatis
+mybatis:
+  # mapper文件路径,不使用该方式
+  #mapper-locations: classpath:XX/*.xml
+  # 给指定包下的实体类简化名称
+  #type-aliases-package:
+  # mybatis-modules-config.xml配置文件的路径
+  #modules-config-location:
+  # 扫描typeHandlers的包
+  #type-handlers-package:
+  # 检查配置文件是否存在
+  check-config-location: false
+  # 设置执行模式（SIMPLE, REUSE, BATCH），默认为SIMPLE
+  executor-type: simple

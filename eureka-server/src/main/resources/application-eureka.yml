@@ -1,0 +1,278 @@
+eureka:
+  instance:
+    # 此实例注册到eureka服务端的唯一的实例ID,其组成为${spring.application.name}:${spring.application.instance_id:${random.value}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    # 获得在eureka服务上注册的应用程序的名字，默认为unknown
+    appname: unknown
+    # 与此实例相关联的主机名，是其他实例可以用来进行请求的准确名称
+    hostname: localhost
+    # 获得在eureka服务上注册的应用程序组的名字，默认为unknown
+    app-group-name: unknown
+    # 实例注册到eureka服务器时，是否开启通讯，默认为false
+    instance-enabled-onit: false
+    # 获取该实例应该接收通信的非安全端口。默认为80
+    non-secure-port: 80
+    # 获取该实例应该接收通信的安全端口，默认为443
+    secure-port: 443
+    # 该实例应该接收通信的非安全端口是否启用，默认为true
+    non-secure-port-enabled: true
+    # 该实例应该接收通信的安全端口是否启用，默认为false
+    secure-port-enabled: false
+    # eureka客户需要多长时间发送心跳给eureka服务器，表明它仍然活着,默认为30 秒
+    lease-renewal-interval-in-seconds: 60
+    # Eureka服务器在接收到实例的最后一次发出的心跳后，需要等待多久才可以将此实例删除，默认为90秒
+    lease-expiration-duration-in-seconds: 90
+    # 此实例定义的虚拟主机名，其他实例将通过使用虚拟主机名找到该实例
+    virtual-host-name: unknown
+    # 此实例定义的安全虚拟主机名
+    secure-virtual-host-name: unknown
+    # 获取用于查找属性的命名空间，默认为eureka
+    namespace: eureka
+    # 与此实例相关联 AWS自动缩放组名称。此项配置是在AWS环境专门使用的实例启动，它已被用于流量停用后自动把一个实例退出服务
+    # a-s-g-name:
+    # 获取与此实例相关联的元数据(key,value)。这个信息被发送到eureka服务器，其他实例可以使用
+    # metadata-map:
+    # 该实例被部署在数据中心
+    # data-center-info:
+    # 获取实例的ip地址
+    # ip-address:
+    # 获取此实例状态页的URL路径，然后构造出主机名，安全端口等，默认为/info
+    # status-page-url-path:
+    # 获取此实例绝对状态页的URL路径，为其他服务提供信息时来找到这个实例的状态的路径，默认为null
+    # status-page-url:
+    # 获取此实例的相关主页URL路径，然后构造出主机名，安全端口等，默认为/
+    # home-page-url-path:
+    # 获取此实例的绝对主页URL路径，为其他服务提供信息时使用的路径,默认为null
+    # home-page-url:
+    # 获取此实例的相对健康检查URL路径，默认为/health
+    # health-check-url-path:
+    # 获取此实例的绝对健康检查URL路径,默认为null
+    # health-check-url:
+    # 获取此实例的绝对安全健康检查网页的URL路径，默认为null
+    # secure-health-check-url:
+    # 获取实例的网络地址，默认为[]
+    # default-address-resolution-order:
+  client:
+    # 实例是否在eureka服务器上注册自己的信息以供其他服务发现，默认为true
+    registerWithEureka: false
+    # 此客户端是否获取eureka服务器注册表上的注册信息，默认为true
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    # 实例是否使用同一zone里的eureka服务器，默认为true，理想状态下，eureka客户端与服务端是在同一zone下
+    prefer-same-zone-eureka: true
+    # 从eureka服务器注册表中获取注册信息的时间间隔（s），默认为30秒
+    registry-fetch-interval-seconds: 30
+    # 复制实例变化信息到eureka服务器所需要的时间间隔（s），默认为30秒
+    initial-instance-info-replication-interval-seconds: 30
+    # 询问Eureka服务url信息变化的时间间隔（s），默认为300秒
+    eureka-service-url-poll-interval-seconds: 300
+    # 获取eureka服务的代理主机，默认为null
+    proxy-host: null
+    # 获取eureka服务的代理端口, 默认为null
+    proxy-port: null
+    # 获取eureka服务的代理用户名，默认为null
+    proxy-user-name: null
+    # 获取eureka服务的代理密码，默认为null
+    proxy-password: null
+    # eureka注册表的内容是否被压缩，默认为true，并且是在最好的网络流量下被压缩
+    g-zip-content: true
+    # eureka需要超时读取之前需要等待的时间，默认为8秒
+    eureka-server-read-timeout-seconds: 8
+    # eureka需要超时连接之前需要等待的时间，默认为5秒
+    eureka-server-connect-timeout-seconds: 5
+    # eureka客户端允许所有eureka服务器连接的总数目，默认是200
+    eureka-server-total-connections: 200
+    # eureka客户端允许eureka服务器主机连接的总数目，默认是50
+    eureka-server-total-connections-per-host: 50
+    # 表示eureka注册中心的路径，如果配置为eureka，则为http://x.x.x.x:x/eureka/
+    # 在eureka的配置文件中加入此配置表示eureka作为客户端向注册中心注册，从而构成eureka集群
+    # 此配置只有在eureka服务器ip地址列表是在DNS中才会用到，默认为null
+    eureka-server-u-r-l-context: null
+    # 获取eureka服务器的端口，此配置只有在eureka服务器ip地址列表是在DNS中才会用到。默认为null
+    eureka-server-port: null
+    # 获取要查询的DNS名称来获得eureka服务器，此配置只有在eureka服务器ip地址列表是在DNS中才会用到。默认为null
+    eureka-server-d-n-s-name: null
+    # eureka客户端是否应该使用DNS机制来获取eureka服务器的地址列表，默认为false
+    use-dns-for-fetching-service-urls: false
+    # 服务器是否能够重定向客户端请求到备份服务器。 如果设置为false，服务器将直接处理请求，如果设置为true，它可能发送HTTP重定向到客户端。默认为false
+    allow-redirects: false
+    # 是否记录eureka服务器和客户端之间在注册表的信息方面的差异，默认为false
+    log-delta-diff: false
+    disable-delta: false
+    # 获取实例所在的地区。默认为us-east-1
+    region: us-east-1
+    # 是否获得处于开启状态的实例的应用程序过滤之后的应用程序。默认为true
+    filter-only-up-instances: true
+    # Eureka服务的http请求关闭之前其响应的时间，默认为30 秒
+    eureka-connection-idle-timeout-seconds: 30
+    # 此客户端只对一个单一的VIP注册表的信息感兴趣。默认为null
+    registry-refresh-single-vip-address: null
+    # 心跳执行程序线程池的大小,默认为2
+    heartbeat-executor-thread-pool-size: 2
+    # 心跳执行程序回退相关的属性，是重试延迟的最大倍数值，默认为10
+    heartbeat-executor-exponential-back-off-bound: 10
+    # 执行程序缓存刷新线程池的大小，默认为5
+    cache-refresh-executor-thread-pool-size: 2
+    # 执行程序指数回退刷新的相关属性，是重试延迟的最大倍数值，默认为10
+    cache-refresh-executor-exponential-back-off-bound: 10
+    # eureka服务器序列化/反序列化的信息中获取“$”符号的的替换字符串。默认为 '_-'
+    dollar-replacement: _-
+    # eureka服务器序列化/反序列化的信息中获取“_”符号的的替换字符串。默认为 '__'
+    escape-char-replacement: __
+    # 如果设置为true,客户端的状态更新将会点播更新到远程服务器上，默认为true
+    on-demand-update-status-change: true
+    # 这是一个短暂的编码器的配置，如果最新的编码器是稳定的，则可以去除，默认为null
+    encoder-name: null
+    # 这是一个短暂的解码器的配置，如果最新的解码器是稳定的，则可以去除，默认为null
+    decoder-name: null
+    # 客户端数据接收
+    # client-data-accept:
+    # 获取实例所在的地区下可用性的区域列表，用逗号隔开
+    # availability-zones:
+    # 获取实现了eureka客户端在第一次启动时读取注册表的信息作为回退选项的实现名称
+    # backup-registry-impl:
+  server:
+    # 自我保护模式，当出现出现网络分区、eureka在短时间内丢失过多客户端时，会进入自我保护模式
+    # 即一个服务长时间没有发送心跳，eureka也不会将其删除，默认为true
+    enable-self-preservation: true
+    # 获取aws访问的id，主要用于弹性ip绑定，此配置是用于aws上的，默认为null
+    a-w-s-access-id: null
+    # 获取aws私有秘钥，主要用于弹性ip绑定，此配置是用于aws上的，默认为null
+    a-w-s-secret-key: null
+    # 获取服务器尝试绑定到候选的EIP的次数，默认为3
+    e-i-p-bind-rebind-retries: 3
+    # 复制的数据在发送请求时是否被压缩，默认为false
+    enable-replicated-request-compression: false
+    # 获取集群里服务器尝试复制数据的次数，默认为5
+    number-of-replication-retries: 5
+    # 连接对等节点服务器复制的超时的时间，单位为毫秒，默认为200
+    peer-node-connect-timeout-ms: 200
+    # 读取对等节点服务器复制的超时的时间，单位为毫秒，默认为200
+    peer-node-read-timeout-ms: 200
+    # 获取对等节点上http连接的总数，默认为1000
+    peer-node-total-connections: 1000
+    # 获取特定的对等节点上http连接的总数，默认为500
+    peer-node-total-connections-per-host: 500
+    # http连接被清理之后服务器的空闲时间，默认为30秒
+    peer-node-connection-idle-timeout-seconds: 30
+    # 客户端保持增量信息缓存的时间，从而保证不会丢失这些信息，单位为毫秒，默认为3 * 60 * 1000
+    retention-time-in-m-s-in-delta-queue: 180000
+    # 清理任务程序被唤醒的时间间隔，清理过期的增量信息，单位为毫秒，默认为30 * 1000
+    delta-retention-timer-interval-in-ms: 30000
+    # 过期实例应该启动并运行的时间间隔，单位为毫秒，默认为60 * 1000
+    eviction-interval-timer-in-ms: 60000
+    # 查询AWS上ASG（自动缩放组）信息的超时值，单位为毫秒，默认为300
+    a-s-g-query-timeout-ms: 300
+    # 从AWS上更新ASG信息的时间间隔，单位为毫秒，默认为5 * 60 * 1000
+    a-s-g-update-interval-ms: 300000
+    # 缓存ASG信息的到期时间，单位为毫秒，默认为10 * 60 * 1000
+    a-s-g-cache-expiry-timeout-ms: 600000
+    # 当注册表信息被改变时，则其被保存在缓存中不失效的时间，默认为180秒
+    response-cache-auto-expiration-in-seconds: 180
+    # 客户端的有效负载缓存应该更新的时间间隔，默认为30 * 1000毫秒
+    response-cache-update-interval-ms: 30000
+    # 目前采用的是二级缓存策略，一个是读写高速缓存过期策略，另一个没有过期只有只读缓存，默认为true，表示只读缓存
+    use-read-only-response-cache: true
+    # 增量信息是否可以提供给客户端看，默认为false
+    disable-delta: false
+    # 状态复制线程可以保持存活的空闲时间，默认为10分钟
+    max-idle-thread-in-minutes-age-for-status-replication: 10
+    # 被用于状态复制的线程的最小数目，默认为1
+    min-threads-for-status-replication: 1
+    # 被用于状态复制的线程的最大数目，默认为1
+    max-threads-for-status-replication: 1
+    # 可允许的状态复制池备份复制事件的最大数量，默认为10000
+    max-elements-in-status-replication-pool: 10000
+    # 当时间变化实例是否跟着同步，默认为true
+    sync-when-timestamp-differs: true
+    # 当eureka服务器启动时尝试去获取集群里其他服务器上的注册信息的次数，默认为5
+    registry-sync-retries: 5
+    # 当eureka服务器启动时获取其他服务器的注册信息失败时，会再次尝试获取，期间需要等待的时间，默认为30 * 1000毫秒
+    registry-sync-retry-wait-ms: 30000
+    # 复制池备份复制事件的最大数量，默认为10000
+    max-elements-in-peer-replication-pool: 10000
+    # 复制线程可以保持存活的空闲时间，默认为15分钟
+    max-idle-thread-age-in-minutes-for-peer-replication: 15
+    # 获取将被用于复制线程的最小数目，默认为5
+    min-threads-for-peer-replication: 5
+    # 获取将被用于复制线程的最大数目，默认为20
+    max-threads-for-peer-replication: 20
+    # 尝试在丢弃复制事件之前进行复制的时间，默认为30000毫秒
+    max-time-for-replication: 30000
+    # 对集群中服务器节点的连接是否应该准备，默认为true
+    prime-aws-replica-connections: true
+    # 增量信息是否可以提供给客户端或一些远程地区，默认为false
+    disable-delta-for-remote-regions: false
+    # 连接到对等远程地eureka节点的超时时间，默认为1000毫秒
+    remote-region-connect-timeout-ms: 1000
+    # 获取从远程地区eureka节点读取信息的超时时间，默认为1000毫秒
+    remote-region-read-timeout-ms: 1000
+    # 获取远程地区对等节点上http连接的总数，默认为1000
+    remote-region-total-connections: 1000
+    # 获取远程地区特定的对等节点上http连接的总数，默认为500
+    remote-region-total-connections-per-host: 500
+    # http连接被清理之后远程地区服务器的空闲时间，默认为30秒
+    remote-region-connection-idle-timeout-seconds: 30
+    # eureka服务器中获取的内容是否在远程地区被压缩，默认为true
+    g-zip-content-from-remote-region: true
+    # 从远程区域取出该注册表的信息的时间间隔，默认为30秒
+    remote-region-registry-fetch-interval: 30
+    # 用于执行远程区域注册表请求的线程池的大小，默认为20
+    remote-region-fetch-thread-pool-size: 20
+    # 如果在远程区域本地没有实例运行，对于应用程序回退的旧行为是否被禁用， 默认为false
+    disable-transparent-fallback-to-other-region: false
+    # 表示集群节点之间的复制是否为了网络效率而进行批处理，默认为false
+    batch-replication: false
+    # Eureka服务器是否应该登录clientAuthHeaders，默认为true
+    log-identity-headers: true
+    # 限流是否应启用或禁用，默认为false
+    rate-limiter-enabled: false
+    # 是否对标准客户端进行限流，默认false
+    rate-limiter-throttle-standard-clients: false
+    # 速率限制的burst size ，默认为10，这里用的是令牌桶算法
+    rate-limiter-burst-size: 10
+    # 速率限制器用的是令牌桶算法，此配置指定平均执行注册请求速率，默认为500
+    rate-limiter-registry-fetch-average-rate: 500
+    # 速率限制器用的是令牌桶算法，此配置指定平均执行请求速率，默认为100
+    rate-limiter-full-fetch-average-rate: 100
+    # 用来描述从AWS第三账户的自动缩放组中的角色名称，默认为“ListAutoScalingGroups”
+    list-auto-scaling-groups-role-name: ListAutoScalingGroups
+    # 集群里eureka节点的变化信息更新的时间间隔，单位为毫秒，默认为10 * 60 * 1000
+    # peer-eureka-nodes-update-interval-ms:
+    # 服务器节点的状态信息被更新的时间间隔，单位为毫秒，默认为30 * 1000
+    # peer-eureka-status-refresh-time-interval-ms: 30000
+    # 在Eureka服务器获取不到集群里对等服务器上的实例时，需要等待的时间，单位为毫秒，默认为1000 * 60 * 5
+    # wait-time-in-ms-when-sync-empty: 300000
+    # 服务器检查ip绑定的时间间隔，单位为毫秒，默认为1 * 60 * 1000
+    # e-i-p-binding-retry-interval-ms-when-unbound:
+    # 与上面的是同一作用，仅仅是稳定状态检查，默认为5 * 60 * 1000
+    # e-i-p-binding-retry-interval-ms:
+    # 阈值因子，默认是0.85，如果阈值比最小值大，则自我保护模式开启
+    # renewal-percent-threshold: 0.85
+    # 阈值更新的时间间隔，单位为毫秒，默认为15 * 60 * 1000
+    # renewal-threshold-update-interval-ms:
+    # 针对远程地区发现的网址域名的map
+    # remote-region-urls-with-name:
+    # 远程地区的URL列表
+    # remote-region-urls:
+    # 必须通过远程区域中检索的应用程序的列表
+    # remote-region-app-whitelist:
+    # 用来合格请求远程区域注册表的信任存储文件，默认为空
+    # remote-region-trust-store:
+    # 获取偏远地区信任存储文件的密码，默认为“changeit”
+    # remote-region-trust-store-password: changeit
+    # 认证的客户端列表，这里是除了标准的eureka Java客户端。
+    # rate-limiter-privileged-clients:
+    # 如果没有设置默认的编解码器将使用全JSON编解码器，获取的是编码器的类名称
+    # json-codec-name:
+    # 如果没有设置默认的编解码器将使用xml编解码器，获取的是编码器的类名称
+    # xml-codec-name:
+    # 获取配置绑定EIP或Route53的策略
+    # binding-strategy:
+    # 用于建立route53域的ttl，默认为301
+    # route53-domain-t-t-l: 30
+    # 服务器尝试绑定到候选Route53域的次数，默认为3
+    # route53-bind-rebind-retries: 3
+    # 服务器应该检查是否和Route53域绑定的时间间隔，默认为5 * 60 * 1000毫秒
+    # route53-binding-retry-interval-ms: 300000

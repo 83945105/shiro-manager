@@ -1,0 +1,53 @@
+shiro:
+  # 用于获取用户sessionId的cookie名
+  session-id-name: token
+  # session校验周期
+  session-validation-interval: 1800000
+  # session超时时间
+  session-time-out: 1800000
+  # cookie有效时间 默认-1
+  cookie-max-age: -1
+  # 缓存类型: ehcache、redis(未实现)
+  cache-type: ehcache
+  # 是否打开认证缓存
+  enabled-authentication-caching: false
+  # 是否打开授权缓存
+  enabled-authorization-caching: true
+  # 缓存配置文件路径
+  ehcache-config-location: classpath:ehcache/shiro-ehcache.xml
+  ehcache-authentication-name: shiro-authenticationCache
+  ehcache-authorization-name: shiro-authorizationCache
+  login-user-name-param: username
+  login-pass-word-param: password
+  # 登录请求地址
+  # 不要使用/api-shiro-common 这个地址前缀,因为该地址默认全部放行
+  login-post-url: /api-shiro/post/login
+  # 登录页面地址
+  # 当未登录时访问页面,将根据访问根路径从zuul的数据库路由中进行匹配,匹配到对应微服务将重定向到对应微服务配置的登录地址
+  # 如果没有匹配到对应微服务,将跳转到该地址
+  login-page-url: /view/login
+  # 登录成功跳转地址
+  login-success-url: /view/home
+  filter:
+    loginUrl: /login
+    unauthorizedUrl: /view/noAuthority
+    formFilterName: authc
+# 该配置文件用于配置本服务API的对应接口实现服务的相关信息
+# 如 module 模块的API 实现于本服务内,所以name属性为当前服务名 ${spring.application.name}
+feign:
+  common-api-service-name: ${spring.application.name}
+  common-api-service-path: /api-shiro-common
+  shiro-api-service-name: ${spring.application.name}
+  shiro-api-service-path: /api-shiro
+  module-api-service-name: ${spring.application.name}
+  module-api-service-path: /api-shiro-module
+  role-api-service-name: ${spring.application.name}
+  role-api-service-path: /api-shiro-role
+  resource-api-service-name: ${spring.application.name}
+  resource-api-service-path: /api-shiro-resource
+  role-resource-api-service-name: ${spring.application.name}
+  role-resource-api-service-path: /api-shiro-role-resource
+  role-user-api-service-name: ${spring.application.name}
+  role-user-api-service-path: /api-shiro-role-user
+  user-api-service-name: huanet-logic-service
+  user-api-service-path: /huanet-logic/api-shiro-user

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>登录</title>
+    <script type="text/javascript"
+            th:src="${#request.getAttribute('staticPathPrefix')}+'/static/js/jquery.min.js'"></script>
+    <script th:inline="javascript">
+        var loginUrl = [[${#request.getAttribute('loginUrl')}]];
+        var usernameParam = [[${#request.getAttribute('usernameParam')}]];
+        var passwordParam = [[${#request.getAttribute('passwordParam')}]];
+    </script>
+</head>
+<body>
+<div id="index">
+    <form id="loginForm" th:action="${#request.getAttribute('loginUrl')}" method="post">
+        <label>用户名: </label>
+        <input id="username" type="text" th:name="${#request.getAttribute('usernameParam')}" name="username">
+        <label>密码: </label>
+        <input id="password" type="password" th:name="${#request.getAttribute('passwordParam')}" name="password">
+    </form>
+    <button id="loginBtn">登录</button>
+</div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loginBtn").click(function () {
+            $("#loginForm").submit();
+            /*            let username = $("#username").val();
+                        let password = $("#password").val();
+                        let param = {};
+                        param[usernameParam] = username;
+                        param[passwordParam] = password;
+                        $.post(loginUrl, param, function (data, status) {
+                            console.log(data)
+                        });*/
+        });
+    });
+</script>
+</html>

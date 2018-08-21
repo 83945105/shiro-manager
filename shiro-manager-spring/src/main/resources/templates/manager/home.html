@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>首页</title>
+    <!--全局引入一些第三方JS,根据自己需求,自行配置-->
+    <!--<link href="../../shiro/shiro/css/vendor.css" rel="stylesheet">-->
+    <link th:href="${#request.getAttribute('staticPathPrefix')} + '/shiro/css/vendor.css'" rel="stylesheet">
+    <!--<link href="../../shiro/shiro/css/home.css" rel="stylesheet">-->
+    <link th:href="${#request.getAttribute('staticPathPrefix')} + '/shiro/css/home.css'" rel="stylesheet">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var basePath = [[${basePath}]];
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div id="index"></div>
+<!--这里不要写任何东西,重要的事情说三遍-->
+<!--这里不要写任何东西,重要的事情说三遍-->
+<!--这里不要写任何东西,重要的事情说三遍-->
+<!--<script type="text/javascript" src="../../shiro/shiro/js/vendor.js"></script>-->
+<script type="text/javascript" th:src="${#request.getAttribute('staticPathPrefix')} + '/shiro/js/vendor.js'"></script>
+<!--<script type="text/javascript" src="../../shiro/shiro/js/home.js"></script>-->
+<script type="text/javascript" th:src="${#request.getAttribute('staticPathPrefix')} + '/shiro/js/home.js'"></script>
+</body>
+</html>

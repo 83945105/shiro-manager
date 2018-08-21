@@ -1,0 +1,823 @@
+/*页面布局*/
+.avalon-merlin-default-left{
+	position:absolute;
+	width:180px;
+	top:0;
+	bottom:0;
+	left:0;
+	background-color:#272727;
+}
+.avalon-merlin-default-right{
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:180px;
+	transition:left 0.45s ease;
+	-moz-transition:left 0.45s ease;
+	-webkit-transition:left 0.45s ease;
+	-o-transition:left 0.45s ease;
+	background-color:#EEEEEE;
+}
+.avalon-merlin-default-right.close{
+	left:0;
+}
+.avalon-merlin-default-header{
+	height:46px;
+	background-color:#272727;
+}
+.avalon-merlin-default-main{
+	position:absolute;
+	top:46px;
+	right:0px;
+	bottom:0px;
+	left:0px;
+}
+.avalon-merlin-default-main-content{
+	position:absolute;
+	top:47px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	padding:0px;
+	background-color:#FFF;
+}
+.avalon-merlin-default-content{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	padding:0px;
+}
+.avalon-merlin-default-list{
+	position:absolute;
+	top:159px;
+	bottom:62px;
+	left:0px;
+	right:0px;
+	padding:0px;
+}
+.avalon-merlin-default-list-page{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 15px 0;
+  text-align: center;
+  background-color: #ffffff;
+}
+.avalon-merlin-default-list-paging{
+  padding: 15px 0;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+/*系统标题*/
+.avalon-merlin-default-logo{
+	height:46px;
+	line-height:46px;
+	font-size:18px;
+	font-weight:500;
+	margin-left:15px;
+	color:#FFFFFF;
+}
+
+/*导航菜单*/
+.avalon-merlin-default-nav{
+	margin:0 70px 0 0;
+}
+.avalon-merlin-default-nav a{
+	display:block;
+	float:left;
+	height:46px;
+	line-height:43px;
+	padding:0 18px;
+	color:#FFFFFF;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	border-top:3px solid transparent;
+}
+.avalon-merlin-default-nav a:hover{
+	color:#FFFFFF;
+	background-color:#3C3C3C;
+}
+.avalon-merlin-default-nav a.selected{
+	border-top:3px solid #009FD8;
+	color:#FFFFFF;
+	background-color:#3C3C3C;
+}
+
+/*折叠菜单*/
+.avalon-merlin-default-flod{
+	display:block;
+	width:40px;
+	height:46px;
+	line-height:46px;
+	text-align:center;
+	cursor:pointer;
+	color:#AAAAAA;
+	background-color:#333333;
+}
+.avalon-merlin-default-flod:hover{
+	color:#666666;
+}
+.avalon-merlin-default-flod i{font-size:22px;}
+
+/*logo*/
+.avalon-merlin-default-system{
+	width:80%;
+	text-align:center;
+	margin:0 auto;
+	padding:20px 0;
+}
+.avalon-merlin-default-logo{
+	width:64px;
+	height:64px;
+	margin:0 auto;
+	border:5px solid #3d3d3d;
+}
+.avalon-merlin-default-sysname{
+	color:#FFF;
+}
+.avalon-merlin-default-sysname h3{
+	font-size:16px;
+	font-weight:normal;
+}
+.avalon-merlin-default-sysname div{
+	font-size:14px;
+}
+
+/*用户导航*/
+.avalon-merlin-default-nav-user{
+	float:right;
+}
+.avalon-merlin-default-userinfo{
+	float:left;
+	margin-right:20px;
+}
+.avalon-merlin-default-face{
+	display:block;
+	float:left;
+	height:32px;
+	width:32px;
+	margin:7px 5px 0px 0px;
+}
+.avalon-merlin-default-username{
+	display:block;
+	float:left;
+	max-width:200px;
+	height:32px;
+	line-height:32px;
+	margin-top:7px;
+	font-weight:normal;
+	color:#FFFFFF;
+  cursor: pointer;
+}
+.avalon-merlin-default-sys-function{
+	float:left;
+}
+.avalon-merlin-default-sys-function li{
+	position:relative;
+	display:block;
+	float:left;
+	height:36px;
+	line-height:36px;
+	padding:5px 12px;
+	cursor:pointer;
+	color:#FFFFFF;
+}
+.avalon-merlin-default-sys-function li:hover{
+	background-color:#3C3C3C;
+}
+.avalon-merlin-default-sys-function li > i{
+	font-size:22px;
+}
+.avalon-merlin-default-sys-function li.quit{
+	color:#FF0000;
+}
+
+/*左侧菜单*/
+.avalon-merlin-default-menu{
+	width:100%;
+}
+.avalon-merlin-default-menu .menu-child{
+  overflow:hidden;
+  transition:all .3s ease-in-out;
+  -webkit-transition:all .3s ease-in-out;
+  -moz-transition:all .3s ease-in-out;
+}
+.avalon-merlin-default-menu .menu-icons{
+	display:block;
+	float:left;
+	width:24px;
+	height:24px;
+	line-height:24px;
+	font-size:16px;
+	text-align:center;
+	margin-top:11px;
+	margin-right:3px;
+	-webkit-transition:all 0.3s;
+	transition:all 0.3s;
+}
+.avalon-merlin-default-menu .menu-icons.selected{
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.avalon-merlin-default-menu .menu-title{
+	display:block;
+	overflow:hidden;
+}
+.avalon-merlin-default-menu .menu-link{
+	display:block;
+	height:46px;
+	line-height:46px;
+	padding:0px 5px;
+	color:#FFFFFF;
+	border-left:4px solid transparent;
+	-webkit-transition:color .3s ease-in-out;
+	-moz-transition:color .3s ease-in-out;
+	transition:color .3s ease-in-out;
+	-webkit-transition:background-color .3s ease-in-out;
+	-moz-transition:background-color .3s ease-in-out;
+	transition:background-color .3s ease-in-out;
+}
+.avalon-merlin-default-menu .menu-link.hover{
+  background-color:#3C3C3C;
+  border-left:4px solid #009fd8;
+}
+.avalon-merlin-default-menu .menu-link:hover{background-color:#3C3C3C;}
+.avalon-merlin-default-menu .menu-link.on{background-color:#009fd8;}
+
+/*文本框*/
+.avalon-merlin-default-text.selected{}
+.avalon-merlin-default-text.disabled{}
+.avalon-merlin-default-text.active{}
+
+/*面包屑*/
+.avalon-merlin-default-crumbs{
+	height:40px;
+	line-height:40px;
+	overflow:hidden;
+	font-size:15px;
+}
+.avalon-merlin-default-crumbs{color:#666}
+.avalon-merlin-default-crumbs span{padding:0 5px 0 0px;color:#AAAAAA}
+.avalon-merlin-default-crumbs a{color:#666;margin-right:5px;}
+.avalon-merlin-default-crumbs a:hover{color:#ff6600;text-decoration:underline;}
+
+/*顶部选项卡*/
+.avalon-merlin-default-tabs-header{
+	height:36px;
+	width:100%;
+	margin-top:10px;
+	position:relative;
+	border-bottom:1px solid #E5E5E5;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-wrap{
+	height:37px;
+	position:absolute;
+	top:0;
+	left:20px;
+	right:20px;
+	bottom:0;
+	overflow:hidden;
+	z-index:10;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-wrap li{
+	display:block;
+	float:left;
+	padding:0 8px;
+	height:36px;
+	position:relative;
+	border:1px solid transparent;
+	cursor:pointer;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-wrap li.selected{
+	background-color:#FFFFFF;
+	border:1px solid #E5E5E5;
+	border-bottom:1px solid #FFFFFF;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-title{
+	height:36px;
+	line-height:36px;
+	float:left;
+	font-weight:normal;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-tools{
+	height:16px;
+	line-height:16px;
+	margin-top:10px;
+	margin-left:10px;
+	float:right;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-tools i{
+	display:block;
+	height:16px;
+	line-height:16px;
+	width:16px;
+	text-align:center;
+	font-size:10px;
+	font-family:arial;
+	cursor:pointer;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-tools i:hover{
+	background-color:#FF0000;
+	color:#FFFFFF;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-scroll-left{
+	width:20px;
+	height:36px;
+	position:absolute;
+	top:0;
+	left:0;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-scroll-left i,
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-scroll-right i{
+	display:block;
+	width:14px;
+	height:30px;
+	line-height:30px;
+	margin:2px auto 0;
+	font-size:13px;
+	cursor:pointer;
+	color:#666666;
+	border:1px solid #E5E5E5;
+	background-color:#FAFAFA;
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-scroll-left i:active,
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-scroll-right i:active{
+	background-color:#F3F3F3
+}
+.avalon-merlin-default-tabs-header .avalon-merlin-default-tabs-scroll-right{
+	width:20px;
+	height:36px;
+	position:absolute;
+	top:0;
+	right:0;
+}
+
+/*选项卡*/
+.avalon-merlin-default-tab{
+	height:44px;
+	width:100%;
+	/*background-color:#FFF;*/
+	position:relative;
+}
+.avalon-merlin-default-tab-title{
+	position:absolute;
+	top:0;
+	left:0;
+	bottom:0;
+	right:0;
+	border-bottom:1px solid #E5E5E5;
+}
+.avalon-merlin-default-tab-title li{
+	display:inline-block;
+	*display:inline;
+	*zoom:1;
+	height:41px;
+	line-height:41px;
+	padding:0px 20px;
+	cursor:pointer;
+	font-size:15px;
+	transition:all .2s;
+	-webkit-transition:all .2s;
+	border:1px solid transparent;
+	border-top:2px solid transparent;
+}
+.avalon-merlin-default-tab-title li.selected{
+	background-color:#FFFFFF;
+	border:1px solid #E5E5E5;
+	border-top:2px solid #009fd8;
+	border-bottom:1px solid transparent;
+}
+
+/*文本*/
+.avalon-merlin-default-text{
+	border:1px solid #E5E5E5;
+	padding:0px 5px;
+	border-radius:2px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+}
+.avalon-merlin-default-select{
+	border:1px solid #E5E5E5;
+	border-radius:2px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+}
+.avalon-merlin-default-textarea{
+	border:1px solid #E5E5E5;
+	padding:5px 5px;
+	border-radius:2px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+	resize:none;
+}
+.avalon-merlin-default-text:focus,.avalon-merlin-default-select:focus,.avalon-merlin-default-textarea:focus{border:1px solid #D5D5D5;}
+
+/*按钮*/
+.avalon-merlin-default-btn {
+	display:inline-block;
+	height:32px;
+	line-height:32px;
+	padding:0 18px;
+	background-color:#2199ed;
+	color:#fff;
+	white-space:nowrap;
+	text-align:center;
+	font-size:14px;
+	border:1px solid transparent;
+	cursor:pointer;
+	border-radius:2px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+}
+
+.avalon-merlin-default-btn:hover {
+	opacity:.8;
+	filter:alpha(opacity=80);
+}
+
+.avalon-merlin-default-btn:active {
+	opacity:1;
+	filter:alpha(opacity=100)
+}
+
+.avalon-merlin-default-btn-radius{
+	border-radius:100px
+}
+
+.avalon-merlin-default-btn .layui-icon{
+	margin-right:3px;
+	font-size:18px;
+	vertical-align:bottom;
+	vertical-align:middle\9
+}
+
+.avalon-merlin-default-btn-close {
+	border:1px solid #E5E5E5;
+	background-color:#F5F5F5;
+	color:#333
+}
+.avalon-merlin-default-btn-close:hover {
+	border-color:#DDDDDD;
+	background-color:#F3F3F3;
+	color:#333
+}
+
+.avalon-merlin-default-btn-primary {
+	border:1px solid #E5E5E5;
+	background-color:#FFFFFF;
+	color:#333
+}
+.avalon-merlin-default-btn-primary:hover {
+	border-color:#DDDDDD;
+	background-color:#F3F3F3;
+	color:#333
+}
+
+.avalon-merlin-default-btn-submit {
+	background-color:#00a04d
+}
+
+.avalon-merlin-default-btn-warning{
+	background-color:#FFB800
+}
+.avalon-merlin-default-btn-danger {
+	background-color:#FF5722
+}
+.avalon-merlin-default-btn-delete{
+	background-color:#d9534f;
+}
+
+.avalon-merlin-default-btn-disabled,.avalon-merlin-default-btn-disabled:active,.avalon-merlin-default-btn-disabled:hover {
+	border:1px solid #e6e6e6;
+	background-color:#FBFBFB;
+	color:#C9C9C9;
+	cursor:not-allowed;
+	opacity:1;
+	filter:alpha(opacity=100);
+}
+
+.avalon-merlin-default-btn-big {
+	height:46px;
+	line-height:46px;
+	padding:0 25px;
+	font-size:16px
+}
+
+.avalon-merlin-default-btn-small{
+	height:38px;
+	line-height:38px;
+	padding:0 10px;
+	font-size:14px
+}
+
+.avalon-merlin-default-btn-small i {
+	font-size:16px !important;
+}
+
+.avalon-merlin-default-btn-mini {
+	height:26px;
+	line-height:26px;
+	padding:0 8px;
+	font-size:12px
+}
+
+.avalon-merlin-default-btn-mini i {
+	font-size:14px !important;
+}
+
+.avalon-merlin-default-btn-group {
+	display:inline-block;
+	vertical-align:middle;
+	font-size:0
+}
+
+.avalon-merlin-default-btn-group .avalon-merlin-default-btn {
+	margin-left:0!important;
+	margin-right:0!important;
+	border-left:1px solid rgba(255,255,255,.5);
+	border-radius:0
+}
+
+.avalon-merlin-default-btn-group .avalon-merlin-default-btn-primary {
+	border-left:none
+}
+
+.avalon-merlin-default-btn-group .avalon-merlin-default-btn-primary:hover {
+	border-color:#E5E5E5;
+	color:#333
+}
+
+.avalon-merlin-default-btn-group .avalon-merlin-default-btn:first-child {
+	border-left:none;
+	border-radius:2px 0 0 2px
+}
+
+.avalon-merlin-default-btn-group .avalon-merlin-default-btn-primary:first-child {
+	border-left:1px solid #E5E5E5
+}
+
+.avalon-merlin-default-btn-group .avalon-merlin-default-btn:last-child {
+	border-radius:0 2px 2px 0
+}
+
+/* 搜索 */
+.avalon-merlin-default-search-bar{
+	background-color:#FFFFFF;
+	/*padding:15px;*/
+	padding:13px;
+	height:32px;
+	/*box-shadow:1px 1px 1px 0px #CCCCCC;*/
+}
+.avalon-merlin-default-search-bar.full{
+  padding:0;
+}
+.avalon-merlin-default-search-bar.bg-search{
+	padding:10px;
+	background-color:#FAFAFA;
+	border-bottom:1px solid #EEEEEE;
+}
+.avalon-merlin-default-search-bar .avalon-merlin-default-search li{
+	float:left;
+}
+.avalon-merlin-default-search-bar .avalon-merlin-default-search li.hl32{
+	line-height:32px;
+	color:#333;
+}
+.avalon-merlin-default-search-bar .avalon-merlin-default-search li.s-lh-normal{
+	line-height:normal;
+}
+.avalon-merlin-default-search-bar .avalon-merlin-default-search li.s-h22{
+	height:22px;
+	line-height:22px;
+}
+.avalon-merlin-default-search-bar .avalon-merlin-default-search i{
+	color:#666;
+	width:35px;
+	text-align:center;
+	vertical-align:middle;
+}
+.avalon-merlin-default-search-bar .avalon-merlin-default-search .pl{
+	padding:0px 0px 0px 10px;
+}
+.avalon-merlin-default-search-bar .avalon-merlin-default-search .rf{
+	float:right;
+}
+
+/*工具条*/
+.avalon-merlin-default-tools-bar{
+	padding:7px 10px;
+	background-color:#FAFAFA;
+	border-top:1px solid #E9E9E9;
+	border-bottom:1px solid #E9E9E9;
+}
+.avalon-merlin-default-tools-bar input{
+	height:26px;
+	line-height:26px;
+}
+
+/*分页*/
+.avalon-merlin-default-paging-main{
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	padding:15px;
+	/*border-top:1px dotted #EEEEEE;
+	background-color:#fdfdfd;*/
+}
+.avalon-merlin-default-paging{
+	padding:15px;
+	height:30px;
+	text-align:center;
+}
+.avalon-merlin-default-paging a,.avalon-merlin-default-paging span{
+	display:inline-block;
+	*display:inline;
+	*zoom:1;
+	height:28px;
+	line-height:28px;
+	margin:0px -1px 5px 0px;
+	font-size:12px;
+	padding:0 15px;
+	background-color:#FFFFFF;
+}
+.avalon-merlin-default-paging a:hover{
+	color:#009fd8;
+}
+.avalon-merlin-default-paging a,
+.avalon-merlin-default-paging button,
+.avalon-merlin-default-paging input,
+.avalon-merlin-default-paging select,
+.avalon-merlin-default-paging span{
+	border:1px solid #E5E5E5;
+}
+.avalon-merlin-default-paging button,.avalon-merlin-default-paging input {
+	height:30px;
+	line-height:30px;
+	border-radius:2px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+	vertical-align:top;
+	background-color:#fff;
+	box-sizing:border-box
+}
+.avalon-merlin-default-paging>a:first-child{
+	border-radius:2px 0 0 2px;
+	-webkit-border-radius:2px 0 0 2px;
+	-moz-border-radius:2px 0 0 2px;
+}
+.avalon-merlin-default-paging>a:last-child{
+	border-radius:0 2px 2px 0;
+	-webkit-border-radius:0 2px 2px 0;
+	-moz-border-radius:0 2px 2px 0;
+}
+.avalon-merlin-default-paging .paging-count,
+.avalon-merlin-default-paging .paging-limits,
+.avalon-merlin-default-paging .paging-skip{
+	margin-left: 10px;
+	margin-right: 10px;
+	padding: 0;
+	border: none
+}
+.avalon-merlin-default-paging .paging-count{
+	border:none;
+}
+.avalon-merlin-default-paging .paging-limits{
+
+}
+.avalon-merlin-default-paging .paging-skip{
+	height: 30px;
+	line-height: 30px;
+	color: #999
+}
+.avalon-merlin-default-paging .paging-spr{
+	color:#999999;
+}
+.avalon-merlin-default-paging .paging-disabled,
+.avalon-merlin-default-paging .paging-disabled:hover{
+	color:#DDDDDD;
+	cursor:not-allowed;
+}
+.avalon-merlin-default-paging .paging-curr{
+	border-color:#009fd8;
+	background-color:#009fd8;
+	color:#FFFFFF;
+}
+.avalon-merlin-default-paging .paging-curr:hover{
+	color:#FFFFFF;
+}
+.avalon-merlin-default-paging input{
+	padding:0 10px;
+	cursor:pointer;
+	width:40px;
+	text-align:center;
+}
+.avalon-merlin-default-paging button{
+	line-height:28px;
+	color:#333;
+	font-size:12px;
+	margin-left:10px;
+}
+.avalon-merlin-default-paging select {
+	height:30px;
+	padding:0 3px;
+	border-radius:2px;
+	cursor: pointer
+}
+.avalon-merlin-default-paging input:focus,
+.avalon-merlin-default-paging select:focus{
+	border-color: #009fd8;
+}
+
+/*列表详情*/
+.avalon-merlin-default-layer-mask{
+	display:none;
+	position:fixed;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	z-index:999;
+	background-color:transparent
+}
+.avalon-merlin-default-layer-mask.bg-black{
+	background-color:rgba(0,0,0,0.3);
+}
+.avalon-merlin-default-layer{
+	position:fixed;
+	top:0;
+	bottom:0;
+	left:auto;
+	right:0;
+	width:0;
+	z-index:1000;
+	display:none;
+	transition:all 0.45s ease;
+	-moz-transition:all 0.45s ease;
+	-webkit-transition:all 0.45s ease;
+	-o-transition:all 0.45s ease;
+	background-color:#FFFFFF;
+	box-shadow:0 6px 18px 2px rgba(0,0,0,.2);
+}
+.avalon-merlin-default-layer-title{
+	background-color:#FAFAFA;
+	border-bottom:1px solid #EEEEEE;
+	overflow:hidden;
+	padding:0px 10px;
+	height:44px;
+}
+.avalon-merlin-default-layer-title h3{
+	float:left;
+	font-size:15px;
+	line-height:44px;
+	width:90%;
+}
+.avalon-merlin-default-layer-close{
+	display:block;
+	width:18px;
+	height:44px;
+	line-height:44px;
+	float:right;
+	font-size:18px;
+	text-align:center;
+	cursor:pointer;
+}
+.avalon-merlin-default-layer-close:active{opacity:0.7;filter:alpha(opacity=70);}
+.avalon-merlin-default-layer-content{
+	position:absolute;
+	top:44px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+}
+.avalon-merlin-default-layer-content.btn{
+	bottom:62px;
+}
+.avalon-merlin-default-layer-btn{
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	padding:15px;
+	border-top:1px dotted #EEEEEE;
+	background-color:#fdfdfd;
+}
+/*无数据---文本*/
+.avalon-merlin-no-data-text{
+	margin:20% auto 0;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	width:80%;
+	font-size:16px;
+	color:#999999;
+}
+.avalon-merlin-no-data-text i{
+	padding-right:5px;
+}

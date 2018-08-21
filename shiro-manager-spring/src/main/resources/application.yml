@@ -1,0 +1,63 @@
+#server:
+#  servlet:
+    #访问根路径
+#    context-path: /shiro
+web:
+  #文件上传路径
+  upload-path: D:/files/
+  #跨域
+  cors:
+    #是否允许
+    allow: true
+  #事务配置
+  transaction:
+    #控制切面
+    pointcut: execution (* com.shiro.service..*.*(..))
+    #超时回滚时间(秒)
+    timeout: 60
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  aop:
+    auto: true
+    proxy-target-class: true
+  mvc:
+    #配置访问需要经过静态的资源路径, /**表示所有
+    #这个配置影响静态资源访问路径,比如配置了 /resource/** 那么访问的时候,路径要加上resource
+    #比如: static-locations: classpath:/public/ 、 static-path-pattern: /resource/**
+    #那么表示静态资源默认指向classpath下的public目录,然后资源访问路径为 项目根路径 + resource + public文件夹下的目录(不要带上public)
+    static-path-pattern: /resource/**
+  resources:
+    #这个配置,表示映射路径,静态资源访问不要带上该路径
+    static-locations: classpath:/static/,classpath:/public/,file:${web.upload-path}
+  #数据库访问配置
+  datasource:
+    #使用 druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    tomcat:
+      driver-class-name: com.mysql.jdbc.Driver
+    #下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    #initialize: 50
+  profiles:
+    include: optimize,zuul,shiro,message
+    active: dev
+#集成mybatis
+mybatis:
+  # mapper文件路径,不使用该方式
+  #mapper-locations: classpath:XX/*.xml
+  # 给指定包下的实体类简化名称
+  #type-aliases-package:
+  # mybatis-modules-config.xml配置文件的路径
+  #modules-config-location:
+  # 扫描typeHandlers的包
+  #type-handlers-package:
+  # 检查配置文件是否存在
+  check-config-location: false
+  # 设置执行模式（SIMPLE, REUSE, BATCH），默认为SIMPLE
+  executor-type: simple
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000

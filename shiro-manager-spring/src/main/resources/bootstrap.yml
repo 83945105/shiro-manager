@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: shiro-service
+  cloud:
+    config:
+      uri: http://localhost:8888/
+      profile: dev
+      label: master
+  rabbitmq:
+    host: localhost
+    port: 5672
+    #username:
+    #password:
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["health","info","bus-refresh"]

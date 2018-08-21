@@ -1,0 +1,38 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+spring:
+  #数据库
+  datasource:
+    #地址
+    url: jdbc:mysql://192.168.0.112:3306/shiro-manager-spring?useUnicode=true&characterEncoding=utf8&useSSL=false
+    #用户名
+    username: root
+    #密码
+    password: root
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: true
+    prefix: classpath:/templates/
+    suffix: .html
+#服务器
+server:
+  #端口号
+  port: 8887
+#日志
+logging:
+  file: D:/log/my_log.log
+  level:
+    com: ERROR
+#公众号配置
+officialaccounts:
+  #用于换取accessToken的url
+  getAccessTokenBaseUrl: https://api.weixin.qq.com/sns/oauth2/access_token
+  #用于拉取用户信息的url
+  getUserInfoBaseUrl: https://api.weixin.qq.com/sns/userinfo
+  appID: wx395af6944120afc3
+  appsecret: 42810b3fcc2dc044b569374b7f10d8a6

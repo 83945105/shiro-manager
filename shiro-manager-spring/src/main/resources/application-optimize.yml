@@ -1,0 +1,24 @@
+server:
+  tomcat:
+    # 最大线程数
+    max-threads: 128
+    # 最小备用线程数
+    min-spare-threads: 64
+  # undertow:
+  # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接,默认取CPU核心数量,最小值为2。
+  # io-threads: 2
+  # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载，默认值为io-threads*8。
+  # worker-threads: ${server.undertow.io-threads} * 8
+zuul:
+  host:
+    # 适用于ApacheHttpClient，如果是okhttp无效。每个服务的http客户端连接池最大连接，默认是200.
+    max-total-connections: 1000
+    # 适用于ApacheHttpClient，如果是okhttp无效。每个route可用的最大连接数，默认值是20。
+    max-per-route-connections: 100
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 60000
+    # Hystrix最大的并发请求execution.isolation.semaphore.maxConcurrentRequests，
+    # 这个值并非TPS、QPS、RPS等都是相对值，指的是1秒时间窗口内的事务/查询/请求，
+    # semaphore.maxConcurrentRequests是一个绝对值，无时间窗口，相当于亚毫秒级的。当请求达到或超过该设置值后，其其余就会被拒绝。默认值是100
+  semaphore:
+    max-semaphores: 100
