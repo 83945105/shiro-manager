@@ -1,7 +1,5 @@
 package com.global.conf;
 
-import com.avalon.holygrail.enums.Status;
-import com.avalon.holygrail.utils.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.netflix.zuul.filters.RefreshableRouteLocator;
 import org.springframework.cloud.netflix.zuul.filters.SimpleRouteLocator;
@@ -9,6 +7,8 @@ import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
+import pub.avalon.holygrail.response.beans.Status;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

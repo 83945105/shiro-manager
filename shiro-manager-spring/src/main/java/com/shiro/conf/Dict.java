@@ -1,6 +1,6 @@
 package com.shiro.conf;
 
-import com.avalon.holygrail.enums.EnumMethods;
+import pub.avalon.beans.EnumMethods;
 
 /**
  * 字典

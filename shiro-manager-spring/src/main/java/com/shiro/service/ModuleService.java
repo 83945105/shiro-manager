@@ -1,9 +1,5 @@
 package com.shiro.service;
 
-import com.avalon.holygrail.enums.Status;
-import com.avalon.holygrail.ss.util.ExceptionUtil;
-import com.avalon.holygrail.utils.DateUtil;
-import com.avalon.holygrail.utils.StringUtil;
 import com.dt.core.bean.FunctionColumnType;
 import com.shiro.model.*;
 import com.dt.core.engine.MySqlEngine;
@@ -14,6 +10,10 @@ import com.shiro.entity.ZuulRoutePut;
 import com.shiro.utils.TableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pub.avalon.beans.Time;
+import pub.avalon.holygrail.response.beans.Status;
+import pub.avalon.holygrail.response.utils.ExceptionUtil;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,8 +77,8 @@ public class ModuleService {
         Long index = this.jdbcEngine.queryOne(Long.class, MySqlEngine.main(ZuulRouteModel.class)
                 .functionColumn(FunctionColumnType.MAX, ZuulRouteModel.Column::index));
         record.setIndex(index == null ? 0 : ++index);
-        record.setCreateTime(DateUtil.getTimeString());
-        record.setCreateTimeStamp(DateUtil.getTimeStamp());
+        record.setCreateTime(Time.localDateTimeNow());
+        record.setCreateTimeStamp(Time.timeStamp());
 
         //创建表
         String resTableName = TableUtils.getResTableName(record.getId());
@@ -127,8 +127,8 @@ public class ModuleService {
             route.setStatus(record.getStatus());
         }
 
-        route.setUpdateTime(DateUtil.getTimeString());
-        route.setUpdateTimeStamp(DateUtil.getTimeStamp());
+        route.setUpdateTime(Time.localDateTimeNow());
+        route.setUpdateTimeStamp(Time.timeStamp());
 
         int count = this.jdbcEngine.updateRecordByPrimaryKeySelective(primaryKeyValue, route, ZuulRouteModel.class);
         if (count != 1) {

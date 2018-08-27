@@ -1,10 +1,5 @@
 package com.global.conf;
 
-import com.avalon.holygrail.ss.norm.ResultInfo;
-import com.avalon.holygrail.ss.util.ResultUtil;
-import com.avalon.holygrail.ss.view.ExceptionView;
-import com.avalon.holygrail.ss.view.ModelView;
-import com.avalon.holygrail.utils.StringUtil;
 import com.dt.core.engine.MySqlEngine;
 import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.exception.UnimplementedInterfaceException;
@@ -25,6 +20,11 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import pub.avalon.holygrail.response.beans.ResultInfo;
+import pub.avalon.holygrail.response.utils.ResultUtil;
+import pub.avalon.holygrail.response.views.ExceptionView;
+import pub.avalon.holygrail.response.views.ModelView;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

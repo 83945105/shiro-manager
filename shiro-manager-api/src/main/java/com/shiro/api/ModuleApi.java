@@ -1,6 +1,5 @@
 package com.shiro.api;
 
-import com.avalon.holygrail.ss.view.DataView;
 import com.shiro.entity.ZuulRouteGet;
 import com.shiro.entity.ZuulRoutePost;
 import com.shiro.entity.ZuulRoutePut;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pub.avalon.holygrail.response.views.DataView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

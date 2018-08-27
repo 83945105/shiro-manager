@@ -1,6 +1,5 @@
 package com.global.conf;
 
-import com.avalon.holygrail.utils.StringUtil;
 import com.dt.core.engine.MySqlEngine;
 import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.entity.JurResGet;
@@ -45,6 +44,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import javax.servlet.Filter;
 import java.util.*;

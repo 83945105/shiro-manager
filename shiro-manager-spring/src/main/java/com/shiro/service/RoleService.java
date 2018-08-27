@@ -1,10 +1,5 @@
 package com.shiro.service;
 
-import com.avalon.holygrail.enums.EnumMethods;
-import com.avalon.holygrail.enums.Status;
-import com.avalon.holygrail.ss.util.ExceptionUtil;
-import com.avalon.holygrail.utils.DateUtil;
-import com.avalon.holygrail.utils.StringUtil;
 import com.dt.core.bean.FunctionColumnType;
 import com.shiro.bean.JurRole;
 import com.shiro.bean.JurRoleRes;
@@ -19,6 +14,11 @@ import com.shiro.entity.JurRolePut;
 import com.shiro.utils.TableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pub.avalon.beans.EnumMethods;
+import pub.avalon.beans.Time;
+import pub.avalon.holygrail.response.beans.Status;
+import pub.avalon.holygrail.response.utils.ExceptionUtil;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,8 +63,8 @@ public class RoleService {
         }
 
         record.setId(record.getRole());
-        record.setCreateTime(DateUtil.getTimeString());
-        record.setCreateTimeStamp(DateUtil.getTimeStamp());
+        record.setCreateTime(Time.localDateTimeNow());
+        record.setCreateTimeStamp(Time.timeStamp());
 
         Long index = this.jdbcEngine.queryOne(Long.class, MySqlEngine.main(tableName, JurRoleModel.class)
                 .functionColumn(FunctionColumnType.MAX, JurRoleModel.Column::index));
@@ -88,8 +88,8 @@ public class RoleService {
         record.setId(primaryKey);
         record.setStatus(status);
 
-        record.setUpdateTime(DateUtil.getTimeString());
-        record.setUpdateTimeStamp(DateUtil.getTimeStamp());
+        record.setUpdateTime(Time.localDateTimeNow());
+        record.setUpdateTimeStamp(Time.timeStamp());
 
         int count = this.jdbcEngine.updateRecordByPrimaryKeySelective(primaryKey, record, tableName, JurRoleModel.class);
         if (count != 1) {
@@ -146,8 +146,8 @@ public class RoleService {
             roleRes.setRoleType(record.getType());
             roleUser.setRoleType(record.getType());
         }
-        String dateString = DateUtil.getTimeString();
-        Long dateTimeStamp = DateUtil.getTimeStamp();
+        String dateString = Time.localDateTimeNow();
+        Long dateTimeStamp = Time.timeStamp();
         role.setUpdateTime(dateString);
         role.setUpdateTimeStamp(dateTimeStamp);
         roleRes.setUpdateTime(dateString);

@@ -1,13 +1,13 @@
 package com.global.controller;
 
-import com.avalon.holygrail.ss.util.ResultUtil;
-import com.avalon.holygrail.ss.view.DataView;
-import com.avalon.holygrail.ss.view.ExceptionView;
 import com.global.conf.MessageConfig;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pub.avalon.holygrail.response.utils.ResultUtil;
+import pub.avalon.holygrail.response.views.DataView;
+import pub.avalon.holygrail.response.views.ExceptionView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

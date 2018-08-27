@@ -1,9 +1,5 @@
 package com.shiro.service;
 
-import com.avalon.holygrail.enums.Status;
-import com.avalon.holygrail.ss.util.ExceptionUtil;
-import com.avalon.holygrail.utils.DateUtil;
-import com.avalon.holygrail.utils.StringUtil;
 import com.dt.core.engine.MySqlEngine;
 import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.bean.JurRes;
@@ -19,6 +15,10 @@ import com.shiro.model.JurRoleResModel;
 import com.shiro.utils.TableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pub.avalon.beans.Time;
+import pub.avalon.holygrail.response.beans.Status;
+import pub.avalon.holygrail.response.utils.ExceptionUtil;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,8 +73,8 @@ public class RoleResourceService {
         JurRoleRes record;
         JurRole role;
         JurRes res;
-        String timeString = DateUtil.getTimeString();
-        long timeStamp = DateUtil.getTimeStamp();
+        String timeString = Time.localDateTimeNow();
+        long timeStamp = Time.timeStamp();
         for (Map.Entry<String, JurRoleGet> roleEntry : roleMap.entrySet()) {
             role = roleEntry.getValue();
             for (Map.Entry<String, JurResGet> resEntry : resMap.entrySet()) {
@@ -157,8 +157,8 @@ public class RoleResourceService {
         }
 
         roleRes = new JurRoleResGet();
-        String timeString = DateUtil.getTimeString();
-        long timeStamp = DateUtil.getTimeStamp();
+        String timeString = Time.localDateTimeNow();
+        long timeStamp = Time.timeStamp();
 
         roleRes.setCreateTime(timeString);
         roleRes.setCreateTimeStamp(timeStamp);
@@ -236,8 +236,8 @@ public class RoleResourceService {
                         .and(table.parentId().equalTo(nodeId))));
         List<JurRoleRes> records = new ArrayList<>();
         JurRoleRes record;
-        String timeString = DateUtil.getTimeString();
-        long timeStamp = DateUtil.getTimeStamp();
+        String timeString = Time.localDateTimeNow();
+        long timeStamp = Time.timeStamp();
         List<String> ids = new ArrayList<>();
         for (JurResGet resource : resources) {
 
@@ -348,8 +348,8 @@ public class RoleResourceService {
                         .and(table.parentIds().like(likeText))));
         List<JurRoleRes> records = new ArrayList<>();
         JurRoleRes record;
-        String timeString = DateUtil.getTimeString();
-        long timeStamp = DateUtil.getTimeStamp();
+        String timeString = Time.localDateTimeNow();
+        long timeStamp = Time.timeStamp();
         List<String> ids = new ArrayList<>();
         for (JurResGet resource : resources) {
 

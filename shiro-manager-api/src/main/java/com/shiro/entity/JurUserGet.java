@@ -1,6 +1,6 @@
 package com.shiro.entity;
 
-import com.avalon.holygrail.enums.Status;
+import pub.avalon.holygrail.response.beans.Status;
 
 /**
  * Created by 白超 on 2018/7/24.

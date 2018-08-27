@@ -1,10 +1,5 @@
 package com.shiro.service;
 
-import com.avalon.holygrail.enums.EnumMethods;
-import com.avalon.holygrail.enums.Status;
-import com.avalon.holygrail.ss.util.ExceptionUtil;
-import com.avalon.holygrail.utils.DateUtil;
-import com.avalon.holygrail.utils.StringUtil;
 import com.shiro.model.JurResModel;
 import com.shiro.model.JurRoleModel;
 import com.shiro.model.JurRoleResModel;
@@ -22,6 +17,11 @@ import com.shiro.utils.TableUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pub.avalon.beans.EnumMethods;
+import pub.avalon.beans.Time;
+import pub.avalon.holygrail.response.beans.Status;
+import pub.avalon.holygrail.response.utils.ExceptionUtil;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,8 +74,8 @@ public class ResourceService {
 
         record.setUrl("");
         record.setPermission("");
-        String timeString = DateUtil.getTimeString();
-        long timeStamp = DateUtil.getTimeStamp();
+        String timeString = Time.localDateTimeNow();
+        long timeStamp = Time.timeStamp();
         if (StringUtil.isEmpty(record.getStatus())) {
             record.setStatus(Status.NORMAL.name());
         }
@@ -174,8 +174,8 @@ public class ResourceService {
             ExceptionUtil.throwFailException("请输入资源许可");
         }
 
-        String timeString = DateUtil.getTimeString();
-        long timeStamp = DateUtil.getTimeStamp();
+        String timeString = Time.localDateTimeNow();
+        long timeStamp = Time.timeStamp();
         if (StringUtil.isEmpty(record.getStatus())) {
             record.setStatus(Status.NORMAL.name());
         }
@@ -316,8 +316,8 @@ public class ResourceService {
         record.setId(primaryKey);
         record.setStatus(status);
 
-        record.setUpdateTime(DateUtil.getTimeString());
-        record.setUpdateTimeStamp(DateUtil.getTimeStamp());
+        record.setUpdateTime(Time.localDateTimeNow());
+        record.setUpdateTimeStamp(Time.timeStamp());
 
         int count = this.jdbcEngine.updateRecordByPrimaryKeySelective(primaryKey, record, tableName, JurResModel.class);
         if (count != 1) {
@@ -386,8 +386,8 @@ public class ResourceService {
         if (!StringUtil.isEmpty(record.getPermission())) {
             res.setPermission(record.getPermission());
         }
-        String dateString = DateUtil.getTimeString();
-        Long dateTimeStamp = DateUtil.getTimeStamp();
+        String dateString = Time.localDateTimeNow();
+        Long dateTimeStamp = Time.timeStamp();
         res.setUpdateTime(dateString);
         res.setUpdateTimeStamp(dateTimeStamp);
         roleRes.setUpdateTime(dateString);

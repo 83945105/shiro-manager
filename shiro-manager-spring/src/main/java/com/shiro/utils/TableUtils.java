@@ -1,12 +1,12 @@
 package com.shiro.utils;
 
-import com.avalon.holygrail.ss.util.ExceptionUtil;
-import com.avalon.holygrail.utils.DateUtil;
-import com.avalon.holygrail.utils.StringUtil;
 import com.shiro.model.JurResModel;
 import com.shiro.model.JurRoleModel;
 import com.shiro.model.JurRoleResModel;
 import com.shiro.model.JurRoleUserModel;
+import pub.avalon.beans.Time;
+import pub.avalon.holygrail.response.utils.ExceptionUtil;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -59,7 +59,7 @@ public class TableUtils {
     }
 
     public static String getRenameTableName(String tableName) {
-        return tableName + "_bak_" + DateUtil.getTimeStringSimple();
+        return tableName + "_bak_" + Time.localDateNow().replaceAll("-", "");
     }
 
     public static String getResTableName(HttpServletRequest request) throws Exception {

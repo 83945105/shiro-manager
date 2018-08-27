@@ -1,13 +1,5 @@
 package com.global.conf;
 
-import com.avalon.holygrail.ss.exception.NeedLoginException;
-import com.avalon.holygrail.ss.exception.NoAuthorityException;
-import com.avalon.holygrail.ss.exception.NotFoundException;
-import com.avalon.holygrail.ss.exception.ResultException;
-import com.avalon.holygrail.ss.norm.ResultInfo;
-import com.avalon.holygrail.ss.util.DataViewUtil;
-import com.avalon.holygrail.ss.view.DataView;
-import com.avalon.holygrail.ss.view.ExceptionView;
 import com.shiro.exception.ThirdPartyLoginException;
 import feign.FeignException;
 import org.apache.shiro.authz.UnauthenticatedException;
@@ -15,6 +7,14 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pub.avalon.holygrail.response.beans.ResultInfo;
+import pub.avalon.holygrail.response.exception.NeedLoginException;
+import pub.avalon.holygrail.response.exception.NoAuthorityException;
+import pub.avalon.holygrail.response.exception.NotFoundException;
+import pub.avalon.holygrail.response.exception.ResultException;
+import pub.avalon.holygrail.response.utils.DataViewUtil;
+import pub.avalon.holygrail.response.views.DataView;
+import pub.avalon.holygrail.response.views.ExceptionView;
 
 import javax.servlet.http.HttpServletRequest;
 

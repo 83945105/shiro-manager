@@ -1,8 +1,5 @@
 package com.shiro.controller;
 
-import com.avalon.holygrail.ss.util.DataViewUtil;
-import com.avalon.holygrail.ss.util.ExceptionUtil;
-import com.avalon.holygrail.ss.view.DataView;
 import com.dt.jdbc.bean.PageResultForBean;
 import com.shiro.entity.JurResPut;
 import com.shiro.model.JurResModel;
@@ -19,6 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import pub.avalon.holygrail.response.utils.DataViewUtil;
+import pub.avalon.holygrail.response.utils.ExceptionUtil;
+import pub.avalon.holygrail.response.views.DataView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

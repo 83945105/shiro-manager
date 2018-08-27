@@ -1,8 +1,5 @@
 package com.shiro.service;
 
-import com.avalon.holygrail.enums.Status;
-import com.avalon.holygrail.ss.util.ExceptionUtil;
-import com.avalon.holygrail.utils.DateUtil;
 import com.dt.core.engine.MySqlEngine;
 import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.bean.JurRole;
@@ -15,6 +12,9 @@ import com.shiro.model.JurRoleUserModel;
 import com.shiro.utils.TableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pub.avalon.beans.Time;
+import pub.avalon.holygrail.response.beans.Status;
+import pub.avalon.holygrail.response.utils.ExceptionUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,8 +63,8 @@ public class RoleUserService {
         List<JurRoleUser> records = new ArrayList<>();
         JurRoleUser record;
         JurRole role;
-        String timeString = DateUtil.getTimeString();
-        long timeStamp = DateUtil.getTimeStamp();
+        String timeString = Time.localDateTimeNow();
+        long timeStamp = Time.timeStamp();
         for (Map.Entry<String, JurRoleGet> roleEntry : roleMap.entrySet()) {
             role = roleEntry.getValue();
             for (String userId : userIds) {
@@ -136,8 +136,8 @@ public class RoleUserService {
         }
 
         JurRoleUser roleUser = new JurRoleUser();
-        String timeString = DateUtil.getTimeString();
-        long timeStamp = DateUtil.getTimeStamp();
+        String timeString = Time.localDateTimeNow();
+        long timeStamp = Time.timeStamp();
 
         roleUser.setCreateTime(timeString);
         roleUser.setCreateTimeStamp(timeStamp);

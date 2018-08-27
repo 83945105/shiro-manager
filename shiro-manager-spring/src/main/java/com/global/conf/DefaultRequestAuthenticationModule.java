@@ -1,7 +1,5 @@
 package com.global.conf;
 
-import com.avalon.holygrail.ss.util.ResultUtil;
-import com.avalon.holygrail.ss.view.ExceptionView;
 import com.shiro.modules.RequestAuthenticationModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpOutputMessage;
@@ -10,6 +8,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.stereotype.Component;
+import pub.avalon.holygrail.response.utils.ResultUtil;
+import pub.avalon.holygrail.response.views.ExceptionView;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

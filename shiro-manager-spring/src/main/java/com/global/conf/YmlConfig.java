@@ -1,8 +1,8 @@
 package com.global.conf;
 
-import com.avalon.holygrail.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import pub.avalon.holygrail.utils.StringUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
