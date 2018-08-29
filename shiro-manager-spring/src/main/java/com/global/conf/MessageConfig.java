@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Message
- * Created by 白超 on 2018/6/20.
+ *
+ * @author 白超
+ * @date 2018/6/20
  */
 @Configuration
 public class MessageConfig {

@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 
 /**
  * yml配置
- * Created by 白超 on 2018/4/8.
+ *
+ * @author 白超
+ * @date 2018/4/8
  */
 @Configuration
 public class YmlConfig {

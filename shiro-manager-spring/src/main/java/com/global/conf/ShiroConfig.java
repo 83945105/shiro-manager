@@ -50,7 +50,8 @@ import javax.servlet.Filter;
 import java.util.*;
 
 /**
- * Created by 白超 on 2018/6/25.
+ * @author 白超
+ * @date 2018/6/25
  */
 @Configuration
 public class ShiroConfig {
@@ -303,6 +304,8 @@ public class ShiroConfig {
     public static final Set<String> ROLE_RES_TABLE_NAMES = new HashSet<>();
     public static final Set<String> ROLE_USER_TABLE_NAMES = new HashSet<>();
 
+    private static final String ROOT_PATH = "/**";
+
     @Bean("shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager,
                                               ShiroModules modules,
@@ -317,7 +320,7 @@ public class ShiroConfig {
         fb.setFilters(filters);
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         /*静态资源放行开始*/
-        if (!StringUtil.isEmpty(staticPathPattern) && !"/**".equals(staticPathPattern)) {
+        if (!StringUtil.isEmpty(staticPathPattern) && !ROOT_PATH.equals(staticPathPattern)) {
             filterChainDefinitionMap.put(staticPathPattern, "anon");
         }
         /*静态资源放行结束*/

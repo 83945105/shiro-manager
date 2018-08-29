@@ -14,6 +14,8 @@ import java.util.Map;
 
 /**
  * 事务
+ *
+ * @author 白超
  */
 @Configuration
 public class TxAnoConfig {
@@ -33,7 +35,7 @@ public class TxAnoConfig {
         if (timeout != null) {
             requiredTx.setTimeout(timeout);
         }
-        Map<String, TransactionAttribute> txMap = new HashMap<>();
+        Map<String, TransactionAttribute> txMap = new HashMap<>(1);
         txMap.put("*", requiredTx);
         source.setNameMap(txMap);
         return source;
@@ -47,7 +49,6 @@ public class TxAnoConfig {
         return pointcutAdvisor;
     }
 
-    /*事务拦截器*/
     @Bean("txInterceptor")
     TransactionInterceptor getTransactionInterceptor(PlatformTransactionManager tx) {
         return new TransactionInterceptor(tx, transactionAttributeSource());

@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by 白超 on 2018/6/8.
+ * @author 白超
+ * @date 2018/6/8
  */
 @Component
 public class DefaultRequestAuthenticationModule implements RequestAuthenticationModule {

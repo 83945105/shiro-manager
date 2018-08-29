@@ -36,19 +36,23 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Created by 白超 on 2018/6/7.
+ * @author 白超
+ * @date 2018/6/7
  */
 @Component
 public class DefaultLoginAuthenticationModule implements LoginAuthenticationModule<ShiroUser> {
 
-    private HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+    private HttpMessageConverter<Object> jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
 
     @Autowired
     private SpringJdbcEngine jdbcEngine;
 
+    private static final String DEV_USERNAME = "developer";
+    private static final String DEV_PASSWORD = "1024";
+
     @Override
     public ShiroUser login(String username, String password) throws AuthenticationException {
-        if ("developer".equals(username) && "1024".equals(password)) {
+        if (DEV_USERNAME.equals(username) && DEV_PASSWORD.equals(password)) {
             return new ShiroUser() {
                 @Override
                 public String getId() {
@@ -146,7 +150,7 @@ public class DefaultLoginAuthenticationModule implements LoginAuthenticationModu
         ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 
         ModelView modelView = new ModelView(ResultUtil.createSuccess("登录成功"));
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(3);
         map.put("sessionIdName", ShiroConfig.SESSION_ID_NAME);
         map.put("sessionIdValue", sessionId.toString());
 
@@ -219,7 +223,7 @@ public class DefaultLoginAuthenticationModule implements LoginAuthenticationModu
             url = ShiroConfig.LOGIN_PAGE_URL;
         }
         HttpOutputMessage outputMessage = new ServletServerHttpResponse((HttpServletResponse) response);
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> result = new HashMap<>(2);
         result.put("route_login_url", url);
         result.put("login_url", ShiroConfig.LOGIN_PAGE_URL);
         jackson2HttpMessageConverter.write(new ExceptionView(ResultUtil.createNeedLogin(MessageConfig.EXCEPTION_NEED_LOGIN_MESSAGE), result), MediaType.APPLICATION_JSON, outputMessage);

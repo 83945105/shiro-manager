@@ -8,7 +8,9 @@ import org.springframework.web.servlet.config.annotation.*;
 
 /**
  * web配置
- * Created by 白超 on 2018-4-5.
+ *
+ * @author 白超
+ * @date 2018-4-5
  */
 @Configuration
 public class WebConfiguration extends WebMvcConfigurationSupport {
@@ -18,7 +20,8 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        if ("true".equals(allow)) {
+        String booleanStr = "true";
+        if (booleanStr.equals(allow)) {
             //设置允许跨域的路径
             registry.addMapping("/**")
                     //设置允许跨域请求的域名
@@ -42,10 +45,10 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         ResourceHandlerRegistration registration = registry.addResourceHandler(staticPathPattern);
-        for (String location : staticLocations.split(",")) {
+        String sign = ",";
+        for (String location : staticLocations.split(sign)) {
             registration.addResourceLocations(location);
         }
-//        registration.addResourceLocations("file:" + uploadPath);
         super.addResourceHandlers(registry);
     }
 
