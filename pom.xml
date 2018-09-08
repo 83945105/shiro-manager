@@ -58,7 +58,7 @@
         <huanet-logic-service.version>0.0.1</huanet-logic-service.version>
         <huanet-logic-api.version>0.0.1</huanet-logic-api.version>
         <shiro-manager-api.version>0.0.1</shiro-manager-api.version>
-        <shiro-manager-core.version>0.0.1-SNAPSHOT</shiro-manager-core.version>
+        <shiro-manager-core.version>0.0.1</shiro-manager-core.version>
     </properties>
 
     <dependencyManagement>

@@ -35,6 +35,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.fusesource.jansi.Ansi;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,6 +59,8 @@ public class ShiroConfig {
 
     @Autowired
     private SpringJdbcEngine jdbcEngine;
+
+    public static Boolean ENABLED = true;
 
     public static String SESSION_ID_NAME = "JSESSIONID";
 
@@ -88,6 +91,11 @@ public class ShiroConfig {
     public static String LOGIN_PAGE_URL = "";
 
     public static String LOGIN_SUCCESS_URL = "";
+
+    @Value("${shiro.enabled}")
+    public void setENABLED(boolean enabled) {
+        ENABLED = enabled;
+    }
 
     @Value("${shiro.session-id-name}")
     public void setSessionIdName(String sessionIdName) {
@@ -310,37 +318,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager,
                                               ShiroModules modules,
                                               JdbcTemplate jdbcTemplate) {
-        ShiroFilterFactoryBean fb = new ShiroFilterFactoryBean();
-        fb.setSecurityManager(securityManager);
-        fb.setLoginUrl(login_url);
-        fb.setUnauthorizedUrl(unauthorizedUrl);
-        Map<String, Filter> filters = new LinkedHashMap<>();
-        filters.put(formFilterName, formAuthenticationFilter(modules));
-        filters.put("resFilter", resourceCheckFilter(modules));
-        fb.setFilters(filters);
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        /*静态资源放行开始*/
-        if (!StringUtil.isEmpty(staticPathPattern) && !ROOT_PATH.equals(staticPathPattern)) {
-            filterChainDefinitionMap.put(staticPathPattern, "anon");
-        }
-        /*静态资源放行结束*/
-        /*通用放行开始*/
-        try {
-            System.out.println("开始获取通用放行资源");
-            List<JurResGet> commonResList = this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(TableUtils.ROOT_RES_TABLE_NAME, JurResModel.class)
-                    .where((condition, mainTable) -> condition
-                            .and(mainTable.parentId().equalTo("7be0ba2c-d0c6-4c6b-bde1-bd8b21a0779f"))));
-            for (JurResGet commonRes : commonResList) {
-                filterChainDefinitionMap.put(commonRes.getUrl(), "anon");
-            }
-            System.out.println("获取到" + commonResList.size() + "条通用放行资源");
-        } catch (Exception e) {
-            System.err.println("获取通用放行资源失败");
-            e.printStackTrace();
-        }
-        /*通用放行结束*/
         /*获取权限表信息开始*/
-        System.out.println("开始获取权限表信息");
         try {
             List<String> tables = jdbcTemplate.queryForList("show tables", String.class);
             for (String table : tables) {
@@ -359,10 +337,61 @@ public class ShiroConfig {
             e.printStackTrace();
         }
         /*获取权限表信息结束*/
-        filterChainDefinitionMap.put(ShiroConfig.LOGIN_PAGE_URL, "anon");
-        filterChainDefinitionMap.put(ShiroConfig.LOGIN_POST_URL, formFilterName + ",anon");
-//        filterChainDefinitionMap.put("/**", formFilterName + ",anon");
-        filterChainDefinitionMap.put("/**", formFilterName + ",resFilter");
+        if (ENABLED) {
+            ShiroFilterFactoryBean fb = new ShiroFilterFactoryBean();
+            fb.setSecurityManager(securityManager);
+            fb.setLoginUrl(login_url);
+            fb.setUnauthorizedUrl(unauthorizedUrl);
+            Map<String, Filter> filters = new LinkedHashMap<>();
+            filters.put(formFilterName, formAuthenticationFilter(modules));
+            filters.put("resFilter", resourceCheckFilter(modules));
+            fb.setFilters(filters);
+            Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+            /*静态资源放行开始*/
+            if (!StringUtil.isEmpty(staticPathPattern) && !ROOT_PATH.equals(staticPathPattern)) {
+                filterChainDefinitionMap.put(staticPathPattern, "anon");
+            }
+            /*静态资源放行结束*/
+            /*通用放行开始*/
+            List<String> publicPathList = new ArrayList<>();
+            try {
+                List<JurResGet> commonResList = this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(TableUtils.ROOT_RES_TABLE_NAME, JurResModel.class)
+                        .where((condition, mainTable) -> condition
+                                .and(mainTable.parentId().equalTo("7be0ba2c-d0c6-4c6b-bde1-bd8b21a0779f"))));
+                for (JurResGet commonRes : commonResList) {
+                    filterChainDefinitionMap.put(commonRes.getUrl(), "anon");
+                    publicPathList.add(commonRes.getUrl());
+                }
+            } catch (Exception e) {
+                System.err.println("获取通用放行资源失败");
+                e.printStackTrace();
+            }
+            /*通用放行结束*/
+            /*打印信息开始*/
+            List<String> staticPathList = new ArrayList<>();
+            if (!StringUtil.isEmpty(staticPathPattern) && !ROOT_PATH.equals(staticPathPattern)) {
+                staticPathList.add(staticPathPattern);
+            }
+            this.printEnabledInfo(staticPathList, publicPathList);
+            /*打印信息结束*/
+            filterChainDefinitionMap.put(ShiroConfig.LOGIN_PAGE_URL, "anon");
+            filterChainDefinitionMap.put(ShiroConfig.LOGIN_POST_URL, formFilterName + ",anon");
+            filterChainDefinitionMap.put("/**", formFilterName + ",resFilter");
+            fb.setFilterChainDefinitionMap(filterChainDefinitionMap);
+            return fb;
+        }
+        // 禁用处理
+        /*打印信息开始*/
+        this.printDisabledInfo();
+        /*打印信息结束*/
+        ShiroFilterFactoryBean fb = new ShiroFilterFactoryBean();
+        fb.setSecurityManager(securityManager);
+        fb.setLoginUrl(login_url);
+        fb.setUnauthorizedUrl(unauthorizedUrl);
+        Map<String, Filter> filters = new LinkedHashMap<>();
+        fb.setFilters(filters);
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/**", "anon");
         fb.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return fb;
     }
@@ -393,5 +422,117 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor aa = new AuthorizationAttributeSourceAdvisor();
         aa.setSecurityManager(securityManager);
         return aa;
+    }
+
+    private void printDisabledInfo() {
+        System.out.println(Ansi.ansi().eraseScreen()
+                .fg(Ansi.Color.RED)
+                .a("**************************************************\n")
+                .a("||                  ")
+                .fg(Ansi.Color.GREEN)
+                .a("权限管理模块")
+                .fg(Ansi.Color.RED)
+                .a("\n")
+                .a("||                  ")
+                .fg(Ansi.Color.GREEN)
+                .a("开发者：")
+                .fg(Ansi.Color.YELLOW)
+                .a("白超")
+                .fg(Ansi.Color.RED)
+                .a("\n")
+                .a("||   ")
+                .fg(Ansi.Color.GREEN)
+                .a("有问题请联系 ")
+                .fg(Ansi.Color.YELLOW)
+                .a("QQ：83945105 微信：wx_83945105")
+                .fg(Ansi.Color.RED)
+                .a("\n")
+                .a("||\n")
+                .a("||                  ")
+                .fg(Ansi.Color.GREEN)
+                .a("状态： ")
+                .fg(Ansi.Color.RED)
+                .a("已禁用")
+                .fg(Ansi.Color.RED)
+                .a("\n")
+                .a("**************************************************")
+                .reset());
+    }
+
+    private void printEnabledInfo(List<String> staticPathList, List<String> publicPathList) {
+        Ansi ansi = Ansi.ansi().eraseScreen()
+                .fg(Ansi.Color.GREEN)
+                .a("**************************************************\n")
+                .a("||                  ")
+                .fg(Ansi.Color.GREEN)
+                .a("权限管理模块")
+                .fg(Ansi.Color.GREEN)
+                .a("\n")
+                .a("||                  ")
+                .fg(Ansi.Color.GREEN)
+                .a("开发者：")
+                .fg(Ansi.Color.YELLOW)
+                .a("白超")
+                .fg(Ansi.Color.GREEN)
+                .a("\n")
+                .a("||   ")
+                .fg(Ansi.Color.GREEN)
+                .a("有问题请联系 ")
+                .fg(Ansi.Color.YELLOW)
+                .a("QQ：83945105 微信：wx_83945105")
+                .fg(Ansi.Color.GREEN)
+                .a("\n")
+                .a("||\n")
+                .a("||                  ")
+                .fg(Ansi.Color.GREEN)
+                .a("状态： ")
+                .fg(Ansi.Color.GREEN)
+                .a("已启用")
+                .fg(Ansi.Color.GREEN)
+                .a("\n");
+
+        ansi.a("||\n")
+                .a("||   ")
+                .fg(Ansi.Color.GREEN)
+                .a("放行静态资源地址：");
+
+        if (staticPathList != null && staticPathList.size() > 0) {
+            for (String staticPath : staticPathList) {
+                ansi.fg(Ansi.Color.GREEN)
+                        .a("\n||   ")
+                        .fg(Ansi.Color.CYAN)
+                        .a(staticPath);
+
+            }
+        } else {
+            ansi.fg(Ansi.Color.GREEN)
+                    .a("\n||   ")
+                    .fg(Ansi.Color.RED)
+                    .a("无");
+        }
+        ansi.fg(Ansi.Color.GREEN)
+                .a("\n");
+        ansi.a("||\n")
+                .a("||   ")
+                .fg(Ansi.Color.GREEN)
+                .a("通用放行地址：");
+        if (publicPathList != null && publicPathList.size() > 0) {
+            for (String publicPath : publicPathList) {
+                ansi.fg(Ansi.Color.GREEN)
+                        .a("\n||   ")
+                        .fg(Ansi.Color.CYAN)
+                        .a(publicPath);
+            }
+        } else {
+            ansi.fg(Ansi.Color.GREEN)
+                    .a("\n||   ")
+                    .fg(Ansi.Color.RED)
+                    .a("无");
+        }
+        ansi.fg(Ansi.Color.GREEN)
+                .a("\n");
+        System.out.println(ansi
+                .a("**************************************************")
+                .reset());
     }
 }

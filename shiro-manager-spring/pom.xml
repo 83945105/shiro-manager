@@ -23,6 +23,8 @@
         <spring-boot-starter-web.version>2.0.2.RELEASE</spring-boot-starter-web.version>
         <spring-boot-starter-aop.version>2.0.2.RELEASE</spring-boot-starter-aop.version>
 
+        <jansi.version>1.11</jansi.version>
+
     </properties>
 
     <dependencies>
@@ -92,6 +94,12 @@
             <groupId>com.github.83945105</groupId>
             <artifactId>holygrail</artifactId>
             <version>${holygrail.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>${jansi.version}</version>
         </dependency>
 
     </dependencies>
