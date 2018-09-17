@@ -1,6 +1,6 @@
 shiro:
   # 是否启用shiro权限拦截
-  enabled: false
+  enabled: true
   # 用于获取用户sessionId的cookie名
   session-id-name: token
   # session校验周期
@@ -51,5 +51,5 @@ feign:
   role-resource-api-service-path: /api-shiro-role-resource
   role-user-api-service-name: ${spring.application.name}
   role-user-api-service-path: /api-shiro-role-user
-  user-api-service-name: huanet-logic-service
-  user-api-service-path: /huanet-logic/api-shiro-user
+  user-api-service-name: iotPlatform-service
+  user-api-service-path: /iotPlatform/api-shiro-user

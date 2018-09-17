@@ -77,7 +77,7 @@ public class DefaultLoginAuthenticationModule implements LoginAuthenticationModu
     public Set<String> getRoles(ShiroUser certificate) {
         Set<String> roles = new HashSet<>();
         for (String roleUserTableName : ShiroConfig.ROLE_USER_TABLE_NAMES) {
-            List<String> list = this.jdbcEngine.queryForList(String.class, MySqlDynamicEngine.query(roleUserTableName, JurRoleUserModel.class)
+            List<String> list = this.jdbcEngine.queryColumnList(JurRoleUserModel.role_alias, String.class, MySqlDynamicEngine.query(roleUserTableName, JurRoleUserModel.class)
                     .column(JurRoleUserModel.Column::role)
                     .where((condition, mainTable) -> condition
                             .and(mainTable.userId().equalTo(certificate.getId()))));
@@ -90,7 +90,7 @@ public class DefaultLoginAuthenticationModule implements LoginAuthenticationModu
     public Set<String> getUrls(ShiroUser certificate, Set<String> roles) {
         Set<String> urls = new HashSet<>();
         for (String roleResTableName : ShiroConfig.ROLE_RES_TABLE_NAMES) {
-            List<String> list = this.jdbcEngine.queryForList(String.class, MySqlDynamicEngine.query(roleResTableName, JurRoleResModel.class)
+            List<String> list = this.jdbcEngine.queryColumnList(JurRoleResModel.resUrl_alias, String.class, MySqlDynamicEngine.query(roleResTableName, JurRoleResModel.class)
                     .column(JurRoleResModel.Column::resUrl)
                     .where((condition, mainTable) -> condition
                             .and(mainTable.role().inS(roles))));
