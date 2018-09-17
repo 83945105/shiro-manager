@@ -1,11 +1,7 @@
 package com.shiro.controller;
 
-import com.dt.jdbc.bean.PageResultForBean;
 import com.shiro.entity.JurResPut;
 import com.shiro.model.JurResModel;
-import com.dt.core.bean.FunctionColumnType;
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.api.ResourceApi;
 import com.shiro.entity.JurResGet;
 import com.shiro.entity.JurResPost;
@@ -19,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import pub.avalon.holygrail.response.utils.DataViewUtil;
 import pub.avalon.holygrail.response.utils.ExceptionUtil;
 import pub.avalon.holygrail.response.views.DataView;
+import pub.avalon.sqlhelper.core.beans.FunctionColumnType;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.beans.PageResultForBean;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,7 +61,7 @@ public class ResourceController implements ResourceApi {
         String[] parentIds = record.getNewParentIds();
         String likeText = (record.getSearchText() == null || "".equals(record.getSearchText())) ? null : "%" + record.getSearchText().trim() + "%";
 
-        PageResultForBean<JurResGet> pageResult = this.jdbcEngine.pageQueryForList(JurResGet.class, currentPage, pageSize, MySqlEngine.main(tableName, JurResModel.class)
+        PageResultForBean<JurResGet> pageResult = this.jdbcEngine.pageQueryForList(JurResGet.class, currentPage, pageSize, MySqlDynamicEngine.query(tableName, JurResModel.class)
                 .leftJoin(tableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                         .and(joinTable.parentId().equalTo(mainTable.id())))
                 .leftJoin(tableName, JurResModel.class, "JurResParent", (on, joinTable, mainTable) -> on
@@ -77,17 +77,14 @@ public class ResourceController implements ResourceApi {
                 .sort(JurResModel.class, "JurResLeft", table -> table.index().asc())
                 .sort(table -> table.index().asc()));
         return DataViewUtil.getModelViewSuccess(
-                pageResult.getResult(),
-                pageResult.getPagination().getTotal(),
-                pageResult.getPagination().getCurrentPage(),
-                pageResult.getPagination().getPageSize());
+                pageResult.getResult(), pageResult.getLimit());
     }
 
     @Override
     @RequestMapping(value = "/get/resourceList", method = RequestMethod.GET)
     public DataView getResourceList(JurResPost record, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String tableName = TableUtils.getResTableName(request);
-        List<JurResGet> list = this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(tableName, JurResModel.class)
+        List<JurResGet> list = this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(tableName, JurResModel.class)
                 .leftJoin(tableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                         .and(joinTable.parentId().equalTo(mainTable.id())))
                 .functionColumn(JurResModel.class, "JurResLeft", FunctionColumnType.COUNT, table -> table.id("childCount"))
@@ -107,7 +104,7 @@ public class ResourceController implements ResourceApi {
         currentPage = currentPage == null ? 1 : currentPage;
         pageSize = pageSize == null ? 10 : pageSize;
         String likeText = (record.getSearchText() == null || "".equals(record.getSearchText())) ? null : "%" + record.getSearchText().trim() + "%";
-        PageResultForBean<JurResGet> pageResult = this.jdbcEngine.pageQueryForList(JurResGet.class, currentPage, pageSize, MySqlEngine.main(tableName, JurResModel.class)
+        PageResultForBean<JurResGet> pageResult = this.jdbcEngine.pageQueryForList(JurResGet.class, currentPage, pageSize, MySqlDynamicEngine.query(tableName, JurResModel.class)
                 .leftJoin(tableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                         .and(joinTable.parentId().equalTo(mainTable.id())))
                 .functionColumn(JurResModel.class, "JurResLeft", FunctionColumnType.COUNT, table -> table.id("childCount"))
@@ -121,10 +118,7 @@ public class ResourceController implements ResourceApi {
                 .group(JurResModel.Group::id)
                 .sort(table -> table.index().asc()));
         return DataViewUtil.getModelViewSuccess(
-                pageResult.getResult(),
-                pageResult.getPagination().getTotal(),
-                pageResult.getPagination().getCurrentPage(),
-                pageResult.getPagination().getPageSize());
+                pageResult.getResult(), pageResult.getLimit());
     }
 
     @Override
@@ -132,7 +126,7 @@ public class ResourceController implements ResourceApi {
     public DataView getRootResourceList(JurResPost record, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String tableName = TableUtils.getResTableName(request);
         String likeText = (record.getSearchText() == null || "".equals(record.getSearchText())) ? null : "%" + record.getSearchText().trim() + "%";
-        List<JurResGet> list = this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(tableName, JurResModel.class)
+        List<JurResGet> list = this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(tableName, JurResModel.class)
                 .leftJoin(tableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                         .and(joinTable.parentId().equalTo(mainTable.id())))
                 .functionColumn(JurResModel.class, "JurResLeft", FunctionColumnType.COUNT, table -> table.id("childCount"))
@@ -156,7 +150,7 @@ public class ResourceController implements ResourceApi {
         if (parentId == null || "".equals(parentId.trim())) {
             ExceptionUtil.throwFailException("未指定父节点ID");
         }
-        List<JurResGet> list = this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(tableName, JurResModel.class)
+        List<JurResGet> list = this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(tableName, JurResModel.class)
                 .leftJoin(tableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                         .and(joinTable.parentId().equalTo(mainTable.id())))
                 .functionColumn(JurResModel.class, "JurResLeft", FunctionColumnType.COUNT, table -> table.id("childCount"))
@@ -188,7 +182,7 @@ public class ResourceController implements ResourceApi {
     public DataView getLocationResourceList(String[] rootIds, JurResPost record, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String tableName = TableUtils.getResTableName(request);
         String likeText = (record.getSearchText() == null || "".equals(record.getSearchText())) ? null : "%" + record.getSearchText().trim() + "%";
-        List<JurResGet> list = this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(tableName, JurResModel.class)
+        List<JurResGet> list = this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(tableName, JurResModel.class)
                 .leftJoin(tableName, JurResModel.class, "JurResParent", (on, joinTable, mainTable) -> on
                         .and(joinTable.id().equalTo(mainTable.parentId())))
                 .column(JurResModel.class, "JurResParent", table -> table.name("parentResourceName"))

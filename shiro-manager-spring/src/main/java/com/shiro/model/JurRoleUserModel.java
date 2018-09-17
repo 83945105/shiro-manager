@@ -1,11 +1,12 @@
 package com.shiro.model;
 
-import com.dt.core.bean.*;
-import com.dt.core.norm.Model;
+import pub.avalon.sqlhelper.core.beans.*;
+import pub.avalon.sqlhelper.core.norm.Model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@SuppressWarnings("all")
 public final class JurRoleUserModel implements Model<JurRoleUserModel, JurRoleUserModel.Column, JurRoleUserModel.On, JurRoleUserModel.Where, JurRoleUserModel.Sort, JurRoleUserModel.Group> {
 
     /**
@@ -20,7 +21,7 @@ public final class JurRoleUserModel implements Model<JurRoleUserModel, JurRoleUs
     /**
      * 主键名
      */
-    public static final String primaryKeyName = "ID";
+    public static final String primaryKeyName = "id";
     /**
      * 主键别名
      */
@@ -240,7 +241,7 @@ public final class JurRoleUserModel implements Model<JurRoleUserModel, JurRoleUs
     }
 
     @Override
-    public ColumnModel<JurRoleUserModel, Column, On, Where, Sort, Group> getColumn() {
+    public ColumnModel<JurRoleUserModel, Column, On, Where, Sort, Group> getColumnModel() {
         return new Column();
     }
 
@@ -524,7 +525,7 @@ public final class JurRoleUserModel implements Model<JurRoleUserModel, JurRoleUs
     }
 
     @Override
-    public OnModel<JurRoleUserModel, Column, On, Where, Sort, Group> getOn() {
+    public OnModel<JurRoleUserModel, Column, On, Where, Sort, Group> getOnModel() {
         return new On();
     }
 
@@ -648,7 +649,7 @@ public final class JurRoleUserModel implements Model<JurRoleUserModel, JurRoleUs
     }
 
     @Override
-    public Where getWhere() {
+    public Where getWhereModel() {
         return new Where();
     }
 
@@ -772,7 +773,7 @@ public final class JurRoleUserModel implements Model<JurRoleUserModel, JurRoleUs
     }
 
     @Override
-    public GroupModel<JurRoleUserModel, Column, On, Where, Sort, Group> getGroup() {
+    public GroupModel<JurRoleUserModel, Column, On, Where, Sort, Group> getGroupModel() {
         return new Group();
     }
 
@@ -912,7 +913,7 @@ public final class JurRoleUserModel implements Model<JurRoleUserModel, JurRoleUs
     }
 
     @Override
-    public SortModel<JurRoleUserModel, Column, On, Where, Sort, Group> getSort() {
+    public SortModel<JurRoleUserModel, Column, On, Where, Sort, Group> getSortModel() {
         return new Sort();
     }
 

@@ -1,7 +1,5 @@
 package com.shiro.controller;
 
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.api.ModuleApi;
 import com.shiro.bean.ZuulRoute;
 import com.shiro.entity.ZuulRouteGet;
@@ -18,6 +16,8 @@ import pub.avalon.holygrail.response.utils.DataViewUtil;
 import pub.avalon.holygrail.response.utils.ExceptionUtil;
 import pub.avalon.holygrail.response.views.DataView;
 import pub.avalon.holygrail.utils.StringUtil;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class ModuleController implements ModuleApi {
     @Override
     @RequestMapping(value = "/get/module/{id}", method = RequestMethod.GET)
     public DataView getModule(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ZuulRoute zuulRoute = this.jdbcEngine.queryByPrimaryKey(id, ZuulRoute.class, MySqlEngine.column(ZuulRouteModel.class));
+        ZuulRoute zuulRoute = this.jdbcEngine.queryByPrimaryKey(id, ZuulRoute.class, MySqlDynamicEngine.query(ZuulRouteModel.class));
         if (zuulRoute == null) {
             ExceptionUtil.throwFailException("当前模块不存在");
         }
@@ -67,7 +67,7 @@ public class ModuleController implements ModuleApi {
     @Override
     @RequestMapping(value = "/get/moduleList", method = RequestMethod.GET)
     public DataView getModuleList(ZuulRouteGet record, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<ZuulRoute> list = this.jdbcEngine.queryForList(ZuulRoute.class, MySqlEngine.main(ZuulRouteModel.class)
+        List<ZuulRoute> list = this.jdbcEngine.queryForList(ZuulRoute.class, MySqlDynamicEngine.query(ZuulRouteModel.class)
                 .sort(table -> table.createTimeStamp().asc()));
         return DataViewUtil.getModelViewSuccess(list);
     }

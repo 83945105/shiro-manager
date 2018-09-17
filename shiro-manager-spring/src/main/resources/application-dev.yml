@@ -29,7 +29,7 @@ server:
 logging:
   file: D:/log/my_log.log
   level:
-    com: DEBUG
+    pub: DEBUG
 #公众号配置
 officialaccounts:
   #用于换取accessToken的url

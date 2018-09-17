@@ -1,7 +1,5 @@
 package com.shiro.controller;
 
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.api.RoleResourceApi;
 import com.shiro.entity.JurRoleResGet;
 import com.shiro.model.JurRoleResModel;
@@ -15,6 +13,8 @@ import pub.avalon.holygrail.response.utils.DataViewUtil;
 import pub.avalon.holygrail.response.utils.ExceptionUtil;
 import pub.avalon.holygrail.response.views.DataView;
 import pub.avalon.holygrail.utils.StringUtil;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +53,7 @@ public class RoleResourceController implements RoleResourceApi {
         if (StringUtil.isEmpty(roleId)) {
             ExceptionUtil.throwFailException("未指定角色ID");
         }
-        List<JurRoleResGet> list = this.jdbcEngine.queryForList(JurRoleResGet.class, MySqlEngine.main(roleResTableName, JurRoleResModel.class)
+        List<JurRoleResGet> list = this.jdbcEngine.queryForList(JurRoleResGet.class, MySqlDynamicEngine.query(roleResTableName, JurRoleResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.roleId().equalTo(roleId))));
         return DataViewUtil.getModelViewSuccess(list);
@@ -66,7 +66,7 @@ public class RoleResourceController implements RoleResourceApi {
         if (StringUtil.isEmpty(resourceId)) {
             ExceptionUtil.throwFailException("未指定资源ID");
         }
-        List<JurRoleResGet> list = this.jdbcEngine.queryForList(JurRoleResGet.class, MySqlEngine.main(roleResTableName, JurRoleResModel.class)
+        List<JurRoleResGet> list = this.jdbcEngine.queryForList(JurRoleResGet.class, MySqlDynamicEngine.query(roleResTableName, JurRoleResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.resId().equalTo(resourceId))));
         return DataViewUtil.getModelViewSuccess(list);

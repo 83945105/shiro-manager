@@ -41,7 +41,7 @@
 
         <dependency>
             <groupId>com.github.83945105</groupId>
-            <artifactId>spring-dt-jdbc</artifactId>
+            <artifactId>sqlhelper-spring</artifactId>
             <version>1.0.0</version>
         </dependency>
 

@@ -3,9 +3,6 @@ package com.shiro.service;
 import com.shiro.model.JurResModel;
 import com.shiro.model.JurRoleModel;
 import com.shiro.model.JurRoleResModel;
-import com.dt.core.bean.FunctionColumnType;
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.bean.JurRes;
 import com.shiro.bean.JurRoleRes;
 import com.shiro.conf.Dict;
@@ -22,6 +19,9 @@ import pub.avalon.beans.Time;
 import pub.avalon.holygrail.response.beans.Status;
 import pub.avalon.holygrail.response.utils.ExceptionUtil;
 import pub.avalon.holygrail.utils.StringUtil;
+import pub.avalon.sqlhelper.core.beans.FunctionColumnType;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +32,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * Created by 白超 on 2018/6/13.
+ * @author 白超
+ * @date 2018/6/13
  */
 @Component
 public class ResourceService {
@@ -88,14 +89,14 @@ public class ResourceService {
         if (newParentIds == null || newParentIds.length == 0) {
             record.setId(UUID.randomUUID().toString());
 
-            Long index = this.jdbcEngine.queryOne(Long.class, MySqlEngine.main(resTableName, JurResModel.class)
+            Long index = this.jdbcEngine.queryColumnOne(1, Long.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                     .functionColumn(FunctionColumnType.MAX, JurResModel.Column::index));
             record.setIndex(index == null ? 0 : ++index);
-            int count = this.jdbcEngine.insertRecordSelective(record, resTableName, JurResModel.class);
+            int count = this.jdbcEngine.insertJavaBeanSelective(record, MySqlDynamicEngine.insert(resTableName, JurResModel.class));
             if (count != 1) {
                 ExceptionUtil.throwFailException("新增资源失败");
             }
-            return this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(resTableName, JurResModel.class)
+            return this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                     .leftJoin(resTableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                             .and(joinTable.parentId().equalTo(mainTable.id())))
                     .functionColumn(JurResModel.class, "JurResLeft", FunctionColumnType.COUNT, table -> table.id("childCount"))
@@ -106,13 +107,13 @@ public class ResourceService {
         }
 
         // 有父节点
-        Map<String, JurRes> resMap = this.jdbcEngine.queryForListInMap("id", JurRes.class, MySqlEngine.main(resTableName, JurResModel.class)
+        Map<String, JurRes> resMap = this.jdbcEngine.queryInMap(JurResModel.primaryKeyAlias, JurRes.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.id().in(newParentIds))));
         JurRes parentRecord;
         List<JurResPost> records = new ArrayList<>();
         List<String> ids = new ArrayList<>();
-        Long index = this.jdbcEngine.queryOne(Long.class, MySqlEngine.main(resTableName, JurResModel.class)
+        Long index = this.jdbcEngine.queryColumnOne(1, Long.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                 .functionColumn(FunctionColumnType.MAX, JurResModel.Column::index));
         index = index == null ? 0 : ++index;
         for (String newParentId : newParentIds) {
@@ -139,11 +140,11 @@ public class ResourceService {
             newRes.setIndex(index++);
             records.add(newRes);
         }
-        int count = this.jdbcEngine.batchInsertRecords(records, resTableName, JurResModel.class);
+        int count = this.jdbcEngine.batchInsertJavaBeans(records, MySqlDynamicEngine.insert(resTableName, JurResModel.class));
         if (count != records.size()) {
             ExceptionUtil.throwFailException("新增资源失败");
         }
-        return this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(resTableName, JurResModel.class)
+        return this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                 .leftJoin(resTableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                         .and(joinTable.parentId().equalTo(mainTable.id())))
                 .functionColumn(JurResModel.class, "JurResLeft", FunctionColumnType.COUNT, table -> table.id("childCount"))
@@ -187,7 +188,7 @@ public class ResourceService {
         List<JurRoleRes> newRoleResList;
         List<JurRoleGet> roleList = null;
         if (roleIds != null && roleIds.length > 0) {
-            roleList = this.jdbcEngine.queryForList(JurRoleGet.class, MySqlEngine.main(roleTableName, JurRoleModel.class)
+            roleList = this.jdbcEngine.queryForList(JurRoleGet.class, MySqlDynamicEngine.query(roleTableName, JurRoleModel.class)
                     .where((condition, mainTable) -> condition
                             .and(mainTable.id().in(roleIds))));
             /*获取第三方角色信息开始*/
@@ -196,7 +197,8 @@ public class ResourceService {
             roleList.addAll(jsonView.getRows(JurRoleGet.class, jurRoleGet -> {
                 jurRoleGet.setType(Dict.RoleType.OTHER.name());
                 return jurRoleGet;
-            }))*/;
+            }))*/
+            ;
             /*获取第三方角色信息结束*/
         }
 
@@ -213,21 +215,21 @@ public class ResourceService {
                 });
 
                 if (newRoleResList != null && newRoleResList.size() > 0) {
-                    int count = this.jdbcEngine.batchInsertRecords(newRoleResList, roleResTableName, JurRoleResModel.class);
+                    int count = this.jdbcEngine.batchInsertJavaBeans(newRoleResList, MySqlDynamicEngine.insert(roleResTableName, JurRoleResModel.class));
                     if (count != newRoleResList.size()) {
                         ExceptionUtil.throwFailException("创建角色资源关系失败");
                     }
                 }
             }
 
-            Long index = this.jdbcEngine.queryOne(Long.class, MySqlEngine.main(resTableName, JurResModel.class)
+            Long index = this.jdbcEngine.queryColumnOne(1, Long.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                     .functionColumn(FunctionColumnType.MAX, JurResModel.Column::index));
             record.setIndex(index == null ? 0 : ++index);
-            int count = this.jdbcEngine.insertRecordSelective(record, resTableName, JurResModel.class);
+            int count = this.jdbcEngine.insertJavaBeanSelective(record, MySqlDynamicEngine.insert(resTableName, JurResModel.class));
             if (count != 1) {
                 ExceptionUtil.throwFailException("新增资源失败");
             }
-            return this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(resTableName, JurResModel.class)
+            return this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                     .leftJoin(resTableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                             .and(joinTable.parentId().equalTo(mainTable.id())))
                     .functionColumn(JurResModel.class, "JurResLeft", FunctionColumnType.COUNT, table -> table.id("childCount"))
@@ -239,14 +241,14 @@ public class ResourceService {
 
 
         // 有父节点
-        Map<String, JurRes> resMap = this.jdbcEngine.queryForListInMap("id", JurRes.class, MySqlEngine.main(resTableName, JurResModel.class)
+        Map<String, JurRes> resMap = this.jdbcEngine.queryInMap(JurResModel.primaryKeyAlias, JurRes.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.id().in(newParentIds))));
         JurRes parentRecord;
         List<JurResPost> records = new ArrayList<>();
         newRoleResList = new ArrayList<>();
         List<String> ids = new ArrayList<>();
-        Long index = this.jdbcEngine.queryOne(Long.class, MySqlEngine.main(resTableName, JurResModel.class)
+        Long index = this.jdbcEngine.queryColumnOne(1, Long.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                 .functionColumn(FunctionColumnType.MAX, JurResModel.Column::index));
         index = index == null ? 0 : ++index;
         for (String newParentId : newParentIds) {
@@ -283,16 +285,16 @@ public class ResourceService {
             }
         }
         if (newRoleResList.size() > 0) {
-            int count = this.jdbcEngine.batchInsertRecords(newRoleResList, roleResTableName, JurRoleResModel.class);
+            int count = this.jdbcEngine.batchInsertJavaBeans(newRoleResList, MySqlDynamicEngine.insert(roleResTableName, JurRoleResModel.class));
             if (count != newRoleResList.size()) {
                 ExceptionUtil.throwFailException("创建角色资源关系失败");
             }
         }
-        int count = this.jdbcEngine.batchInsertRecords(records, resTableName, JurResModel.class);
+        int count = this.jdbcEngine.batchInsertJavaBeans(records, MySqlDynamicEngine.insert(resTableName, JurResModel.class));
         if (count != records.size()) {
             ExceptionUtil.throwFailException("新增资源失败");
         }
-        return this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(resTableName, JurResModel.class)
+        return this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(resTableName, JurResModel.class)
                 .leftJoin(resTableName, JurResModel.class, "JurResLeft", (on, joinTable, mainTable) -> on
                         .and(joinTable.parentId().equalTo(mainTable.id())))
                 .functionColumn(JurResModel.class, "JurResLeft", FunctionColumnType.COUNT, table -> table.id("childCount"))
@@ -301,7 +303,6 @@ public class ResourceService {
                         .and(mainTable.id().inS(ids)))
                 .group(JurResModel.Group::id));
     }
-
 
     public void updateResourceStatus(String primaryKey, String status, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String tableName = TableUtils.getResTableName(request);
@@ -319,7 +320,7 @@ public class ResourceService {
         record.setUpdateTime(Time.localDateTimeNow());
         record.setUpdateTimeStamp(Time.timeStamp());
 
-        int count = this.jdbcEngine.updateRecordByPrimaryKeySelective(primaryKey, record, tableName, JurResModel.class);
+        int count = this.jdbcEngine.updateJavaBeanByPrimaryKeySelective(primaryKey, record, MySqlDynamicEngine.update(tableName, JurResModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("更改资源状态失败");
         }
@@ -335,24 +336,24 @@ public class ResourceService {
         for (String id : ids) {
             String likeString = "%" + id + "%";
             //删除所有相关角色资源关系数据
-            this.jdbcEngine.delete(MySqlEngine.main(roleResTableName, JurRoleResModel.class)
+            this.jdbcEngine.delete(MySqlDynamicEngine.delete(roleResTableName, JurRoleResModel.class)
                     .innerJoin(resTableName, JurResModel.class, (on, joinTable, mainTable) -> on
                             .and(joinTable.id().equalTo(mainTable.resId())))
                     .where(JurResModel.class, (condition, table, mainTable) -> condition
                             .and(table.parentIds().like(likeString))));
             //删除所有相关资源
-            this.jdbcEngine.delete(MySqlEngine.main(resTableName, JurResModel.class)
+            this.jdbcEngine.delete(MySqlDynamicEngine.delete(resTableName, JurResModel.class)
                     .where((condition, mainTable) -> condition
                             .and(mainTable.parentIds().like(likeString))));
         }
 
         //删除关系数据
-        this.jdbcEngine.delete(MySqlEngine.main(roleResTableName, JurRoleResModel.class)
+        this.jdbcEngine.delete(MySqlDynamicEngine.delete(roleResTableName, JurRoleResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.resId().in(ids))));
 
         //删除所有资源
-        this.jdbcEngine.delete(MySqlEngine.main(resTableName, JurResModel.class)
+        this.jdbcEngine.delete(MySqlDynamicEngine.delete(resTableName, JurResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.id().in(ids))));
 
@@ -364,7 +365,7 @@ public class ResourceService {
         if (id == null || id.trim().length() == 0) {
             ExceptionUtil.throwFailException("未指定资源ID");
         }
-        int count = this.jdbcEngine.queryCount(MySqlEngine.main(resTableName, JurResModel.class)
+        int count = this.jdbcEngine.queryCount(MySqlDynamicEngine.query(resTableName, JurResModel.class)
                 .where((condition, mainTable) -> condition.and(mainTable.id().equalTo(id))));
         if (count != 1) {
             ExceptionUtil.throwFailException("没有可以修改的资源");
@@ -394,12 +395,12 @@ public class ResourceService {
         roleRes.setUpdateTimeStamp(dateTimeStamp);
 
         //更新相关资源
-        this.jdbcEngine.updateRecordSelective(roleRes, MySqlEngine.main(roleResTableName, JurRoleResModel.class)
+        this.jdbcEngine.updateJavaBeanSelective(roleRes, MySqlDynamicEngine.update(roleResTableName, JurRoleResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.resId().equalTo(id))));
 
         //更新资源
-        count = this.jdbcEngine.updateRecordByPrimaryKeySelective(id, res, resTableName, JurResModel.class);
+        count = this.jdbcEngine.updateJavaBeanByPrimaryKeySelective(id, res, MySqlDynamicEngine.update(resTableName, JurResModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("更新资源失败");
         }

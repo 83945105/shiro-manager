@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by 白超 on 2018/8/1.
+ * 通用接口
+ *
+ * @author 白超
+ * @date 2018/8/1
  */
 @FeignClient(name = "${feign.common-api-service-name:shiro-service}", path = "${feign.common-api-service-path:/api-shiro-common}")
 public interface CommonApi {

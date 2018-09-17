@@ -1,14 +1,11 @@
 package com.shiro.service;
 
-import com.dt.core.bean.FunctionColumnType;
 import com.shiro.bean.JurRole;
 import com.shiro.bean.JurRoleRes;
 import com.shiro.bean.JurRoleUser;
 import com.shiro.model.JurRoleModel;
 import com.shiro.model.JurRoleResModel;
 import com.shiro.model.JurRoleUserModel;
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.entity.JurRolePost;
 import com.shiro.entity.JurRolePut;
 import com.shiro.utils.TableUtils;
@@ -19,6 +16,9 @@ import pub.avalon.beans.Time;
 import pub.avalon.holygrail.response.beans.Status;
 import pub.avalon.holygrail.response.utils.ExceptionUtil;
 import pub.avalon.holygrail.utils.StringUtil;
+import pub.avalon.sqlhelper.core.beans.FunctionColumnType;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +38,7 @@ public class RoleService {
 
     public boolean isRoleExist(String role, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String tableName = TableUtils.getRoleTableName(request);
-        return this.jdbcEngine.queryCount(MySqlEngine.main(tableName, JurRoleModel.class)
+        return this.jdbcEngine.queryCount(MySqlDynamicEngine.query(tableName, JurRoleModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.role().equalTo(role)))) > 0;
     }
@@ -66,10 +66,10 @@ public class RoleService {
         record.setCreateTime(Time.localDateTimeNow());
         record.setCreateTimeStamp(Time.timeStamp());
 
-        Long index = this.jdbcEngine.queryOne(Long.class, MySqlEngine.main(tableName, JurRoleModel.class)
+        Long index = this.jdbcEngine.queryColumnOne(1, Long.class, MySqlDynamicEngine.query(tableName, JurRoleModel.class)
                 .functionColumn(FunctionColumnType.MAX, JurRoleModel.Column::index));
         record.setIndex(index == null ? 0 : ++index);
-        int count = this.jdbcEngine.insertRecordSelective(record, tableName, JurRoleModel.class);
+        int count = this.jdbcEngine.insertJavaBeanSelective(record, MySqlDynamicEngine.insert(tableName, JurRoleModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("新增角色失败");
         }
@@ -91,7 +91,7 @@ public class RoleService {
         record.setUpdateTime(Time.localDateTimeNow());
         record.setUpdateTimeStamp(Time.timeStamp());
 
-        int count = this.jdbcEngine.updateRecordByPrimaryKeySelective(primaryKey, record, tableName, JurRoleModel.class);
+        int count = this.jdbcEngine.updateJavaBeanByPrimaryKeySelective(primaryKey, record, MySqlDynamicEngine.update(tableName, JurRoleModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("更改角色状态失败");
         }
@@ -106,17 +106,17 @@ public class RoleService {
         }
 
         //删除角色资源数据
-        this.jdbcEngine.delete(MySqlEngine.main(roleResTableName, JurRoleResModel.class)
+        this.jdbcEngine.delete(MySqlDynamicEngine.delete(roleResTableName, JurRoleResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.roleId().in(ids))));
 
         //删除角色用户数据
-        this.jdbcEngine.delete(MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+        this.jdbcEngine.delete(MySqlDynamicEngine.delete(roleUserTableName, JurRoleUserModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.roleId().in(ids))));
 
         //删除角色
-        this.jdbcEngine.delete(MySqlEngine.main(roleTableName, JurRoleModel.class)
+        this.jdbcEngine.delete(MySqlDynamicEngine.delete(roleTableName, JurRoleModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.id().in(ids))));
     }
@@ -128,7 +128,7 @@ public class RoleService {
         if (id == null || id.trim().length() == 0) {
             ExceptionUtil.throwFailException("未指定角色ID");
         }
-        int count = this.jdbcEngine.queryCount(MySqlEngine.main(roleTableName, JurRoleModel.class)
+        int count = this.jdbcEngine.queryCount(MySqlDynamicEngine.query(roleTableName, JurRoleModel.class)
                 .where((condition, mainTable) -> condition.and(mainTable.id().equalTo(id))));
         if (count != 1) {
             ExceptionUtil.throwFailException("没有可以修改的角色");
@@ -156,16 +156,16 @@ public class RoleService {
         roleUser.setUpdateTimeStamp(dateTimeStamp);
 
         //更新相关资源
-        this.jdbcEngine.updateRecordSelective(roleRes, MySqlEngine.main(roleResTableName, JurRoleResModel.class)
+        this.jdbcEngine.updateJavaBeanSelective(roleRes, MySqlDynamicEngine.update(roleResTableName, JurRoleResModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.roleId().equalTo(id))));
 
-        this.jdbcEngine.updateRecordSelective(roleUser, MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+        this.jdbcEngine.updateJavaBeanSelective(roleUser, MySqlDynamicEngine.update(roleUserTableName, JurRoleUserModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.roleId().equalTo(id))));
 
         //更新角色
-        count = this.jdbcEngine.updateRecordByPrimaryKeySelective(id, role, roleTableName, JurRoleModel.class);
+        count = this.jdbcEngine.updateJavaBeanByPrimaryKeySelective(id, role, MySqlDynamicEngine.update(roleTableName, JurRoleModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("更新角色失败");
         }

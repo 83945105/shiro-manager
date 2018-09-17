@@ -1,7 +1,5 @@
 package com.global.conf;
 
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.entity.JurResGet;
 import com.shiro.filter.AjaxFormAuthenticationFilter;
 import com.shiro.filter.ResourceCheckFilter;
@@ -46,6 +44,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import pub.avalon.holygrail.utils.StringUtil;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.Filter;
 import java.util.*;
@@ -355,7 +355,7 @@ public class ShiroConfig {
             /*通用放行开始*/
             List<String> publicPathList = new ArrayList<>();
             try {
-                List<JurResGet> commonResList = this.jdbcEngine.queryForList(JurResGet.class, MySqlEngine.main(TableUtils.ROOT_RES_TABLE_NAME, JurResModel.class)
+                List<JurResGet> commonResList = this.jdbcEngine.queryForList(JurResGet.class, MySqlDynamicEngine.query(TableUtils.ROOT_RES_TABLE_NAME, JurResModel.class)
                         .where((condition, mainTable) -> condition
                                 .and(mainTable.parentId().equalTo("7be0ba2c-d0c6-4c6b-bde1-bd8b21a0779f"))));
                 for (JurResGet commonRes : commonResList) {

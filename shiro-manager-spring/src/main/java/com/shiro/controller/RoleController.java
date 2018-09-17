@@ -1,11 +1,8 @@
 package com.shiro.controller;
 
-import com.dt.jdbc.bean.PageResultForBean;
 import com.shiro.entity.JurRolePut;
 import com.shiro.model.JurRoleModel;
 import com.shiro.model.JurRoleResModel;
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.api.RoleApi;
 import com.shiro.entity.JurResPost;
 import com.shiro.entity.JurRoleGet;
@@ -20,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pub.avalon.holygrail.response.utils.DataViewUtil;
 import pub.avalon.holygrail.response.views.DataView;
 import pub.avalon.holygrail.utils.StringUtil;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.beans.PageResultForBean;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -72,13 +72,10 @@ public class RoleController implements RoleApi {
         String tableName = TableUtils.getRoleTableName(request);
         currentPage = currentPage == null ? 1 : currentPage;
         pageSize = pageSize == null ? 10 : pageSize;
-        PageResultForBean<JurRoleGet> pageResult = this.jdbcEngine.pageQueryForList(JurRoleGet.class, currentPage, pageSize, MySqlEngine.main(tableName, JurRoleModel.class)
+        PageResultForBean<JurRoleGet> pageResult = this.jdbcEngine.pageQueryForList(JurRoleGet.class, currentPage, pageSize, MySqlDynamicEngine.query(tableName, JurRoleModel.class)
                 .sort(table -> table.index().asc()));
         return DataViewUtil.getModelViewSuccess(
-                pageResult.getResult(),
-                pageResult.getPagination().getTotal(),
-                pageResult.getPagination().getCurrentPage(),
-                pageResult.getPagination().getPageSize());
+                pageResult.getResult(), pageResult.getLimit());
     }
 
     @Override
@@ -86,7 +83,7 @@ public class RoleController implements RoleApi {
     public DataView getRoleList(JurRolePost record, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String tableName = TableUtils.getRoleTableName(request);
         String likeText = (record.getSearchText() == null || "".equals(record.getSearchText())) ? null : "%" + record.getSearchText().trim() + "%";
-        List<JurRoleGet> list = this.jdbcEngine.queryForList(JurRoleGet.class, MySqlEngine.main(tableName, JurRoleModel.class)
+        List<JurRoleGet> list = this.jdbcEngine.queryForList(JurRoleGet.class, MySqlDynamicEngine.query(tableName, JurRoleModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.name().like(likeText))
                         .or(mainTable.role().like(likeText)))
@@ -115,7 +112,7 @@ public class RoleController implements RoleApi {
     public DataView getRolesForResource(JurResPost record, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String roleTableName = TableUtils.getRoleTableName(request);
         String resTableName = TableUtils.getRoleResTableName(request);
-        List<JurRoleGet> list = this.jdbcEngine.queryForList(JurRoleGet.class, MySqlEngine.main(roleTableName, JurRoleModel.class)
+        List<JurRoleGet> list = this.jdbcEngine.queryForList(JurRoleGet.class, MySqlDynamicEngine.query(roleTableName, JurRoleModel.class)
                 .innerJoin(resTableName, JurRoleResModel.class, (on, joinTable, mainTable) -> on
                         .and(joinTable.roleId().equalTo(mainTable.id()))
                         .and(joinTable.resId().equalTo(record.getId()))));

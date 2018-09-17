@@ -1,7 +1,5 @@
 package com.shiro.service;
 
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.bean.JurRole;
 import com.shiro.bean.JurRoleUser;
 import com.shiro.conf.Dict;
@@ -15,6 +13,8 @@ import org.springframework.stereotype.Component;
 import pub.avalon.beans.Time;
 import pub.avalon.holygrail.response.beans.Status;
 import pub.avalon.holygrail.response.utils.ExceptionUtil;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 白超 on 2018/7/25.
+ * @author 白超
+ * @date 2018/7/25
  */
 @Component
 public class RoleUserService {
@@ -37,7 +38,7 @@ public class RoleUserService {
         if (userIds == null || userIds.length == 0) {
             ExceptionUtil.throwFailException("未指定用户ID");
         }
-        this.jdbcEngine.delete(MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+        this.jdbcEngine.delete(MySqlDynamicEngine.delete(roleUserTableName, JurRoleUserModel.class)
                 .leftJoin(roleTableName, JurRoleModel.class, (on, joinTable, mainTable) -> on
                         .and(joinTable.id().equalTo(mainTable.roleId())))
                 .where((condition, mainTable) -> condition
@@ -48,7 +49,7 @@ public class RoleUserService {
         if (roleIds == null || roleIds.length == 0) {
             return;
         }
-        Map<String, JurRoleGet> roleMap = this.jdbcEngine.queryForListInMap(JurRoleModel.primaryKeyAlias, JurRoleGet.class, MySqlEngine.main(roleTableName, JurRoleModel.class)
+        Map<String, JurRoleGet> roleMap = this.jdbcEngine.queryInMap(JurRoleModel.primaryKeyAlias, JurRoleGet.class, MySqlDynamicEngine.query(roleTableName, JurRoleModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.id().in(roleIds))));
         /*获取第三方角色信息开始*/
@@ -85,7 +86,7 @@ public class RoleUserService {
             }
         }
 
-        int count = this.jdbcEngine.batchInsertRecords(records, roleUserTableName, JurRoleUserModel.class);
+        int count = this.jdbcEngine.batchInsertJavaBeans(records, MySqlDynamicEngine.insert(roleUserTableName, JurRoleUserModel.class));
         if (count != records.size()) {
             ExceptionUtil.throwFailException("操作失败");
         }
@@ -98,14 +99,16 @@ public class RoleUserService {
         if (userIds == null || userIds.length == 0) {
             ExceptionUtil.throwFailException("未指定用户ID");
         }
-        this.jdbcEngine.delete(MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+        this.jdbcEngine.delete(MySqlDynamicEngine.delete(roleUserTableName, JurRoleUserModel.class)
                 .leftJoin(roleTableName, JurRoleModel.class, (on, joinTable, mainTable) -> on
                         .and(joinTable.id().equalTo(mainTable.roleId())))
                 .where((condition, mainTable) -> condition
                         .and(mainTable.userId().in(userIds))
                         .and(JurRoleModel.class, (condition1, table, mainTable1) -> condition1
-                                .and(table.status().equalTo(Status.NORMAL.name()))//删除正常状态角色相关数据
-                                .or(mainTable.roleType().equalTo(Dict.RoleType.OTHER.name())))));//删除其它类型角色相关数据
+                                //删除正常状态角色相关数据
+                                .and(table.status().equalTo(Status.NORMAL.name()))
+                                //删除其它类型角色相关数据
+                                .or(mainTable.roleType().equalTo(Dict.RoleType.OTHER.name())))));
     }
 
     public void grantRoleToUser(String userId, String roleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -118,7 +121,7 @@ public class RoleUserService {
             ExceptionUtil.throwFailException("未指定角色ID");
         }
 
-        JurRoleUserGet ru = this.jdbcEngine.queryOne(JurRoleUserGet.class, MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+        JurRoleUserGet ru = this.jdbcEngine.queryOne(JurRoleUserGet.class, MySqlDynamicEngine.query(roleUserTableName, JurRoleUserModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.userId().equalTo(userId)
                                 .roleId().equalTo(roleId))));
@@ -127,7 +130,7 @@ public class RoleUserService {
             ExceptionUtil.throwFailException("当前用户已经拥有该角色,无法再次授予");
         }
 
-        JurRoleGet role = this.jdbcEngine.queryByPrimaryKey(roleId, JurRoleGet.class, MySqlEngine.column(roleTableName, JurRoleModel.class));
+        JurRoleGet role = this.jdbcEngine.queryByPrimaryKey(roleId, JurRoleGet.class, MySqlDynamicEngine.query(roleTableName, JurRoleModel.class));
 /*        if (role == null) {
             role = JsonViewUtil.success(this.hRoleApi.getRole(roleId, request, response)).getRecord(JurRoleGet.class);
         }*/
@@ -150,7 +153,7 @@ public class RoleUserService {
 
         roleUser.setUserId(userId);
 
-        int count = this.jdbcEngine.insertRecordSelective(roleUser, roleUserTableName, JurRoleUserModel.class);
+        int count = this.jdbcEngine.insertJavaBeanSelective(roleUser, MySqlDynamicEngine.insert(roleUserTableName, JurRoleUserModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("操作失败");
         }
@@ -165,7 +168,7 @@ public class RoleUserService {
             ExceptionUtil.throwFailException("未指定角色ID");
         }
 
-        int count = this.jdbcEngine.delete(MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+        int count = this.jdbcEngine.delete(MySqlDynamicEngine.delete(roleUserTableName, JurRoleUserModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.userId().equalTo(userId)
                                 .roleId().equalTo(roleId))));

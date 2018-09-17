@@ -1,11 +1,12 @@
 package com.shiro.model;
 
-import com.dt.core.bean.*;
-import com.dt.core.norm.Model;
+import pub.avalon.sqlhelper.core.beans.*;
+import pub.avalon.sqlhelper.core.norm.Model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@SuppressWarnings("all")
 public final class ZuulRouteModel implements Model<ZuulRouteModel, ZuulRouteModel.Column, ZuulRouteModel.On, ZuulRouteModel.Where, ZuulRouteModel.Sort, ZuulRouteModel.Group> {
 
     /**
@@ -230,7 +231,7 @@ public final class ZuulRouteModel implements Model<ZuulRouteModel, ZuulRouteMode
     }
 
     @Override
-    public ColumnModel<ZuulRouteModel, Column, On, Where, Sort, Group> getColumn() {
+    public ColumnModel<ZuulRouteModel, Column, On, Where, Sort, Group> getColumnModel() {
         return new Column();
     }
 
@@ -497,7 +498,7 @@ public final class ZuulRouteModel implements Model<ZuulRouteModel, ZuulRouteMode
     }
 
     @Override
-    public OnModel<ZuulRouteModel, Column, On, Where, Sort, Group> getOn() {
+    public OnModel<ZuulRouteModel, Column, On, Where, Sort, Group> getOnModel() {
         return new On();
     }
 
@@ -614,7 +615,7 @@ public final class ZuulRouteModel implements Model<ZuulRouteModel, ZuulRouteMode
     }
 
     @Override
-    public Where getWhere() {
+    public Where getWhereModel() {
         return new Where();
     }
 
@@ -731,7 +732,7 @@ public final class ZuulRouteModel implements Model<ZuulRouteModel, ZuulRouteMode
     }
 
     @Override
-    public GroupModel<ZuulRouteModel, Column, On, Where, Sort, Group> getGroup() {
+    public GroupModel<ZuulRouteModel, Column, On, Where, Sort, Group> getGroupModel() {
         return new Group();
     }
 
@@ -863,7 +864,7 @@ public final class ZuulRouteModel implements Model<ZuulRouteModel, ZuulRouteMode
     }
 
     @Override
-    public SortModel<ZuulRouteModel, Column, On, Where, Sort, Group> getSort() {
+    public SortModel<ZuulRouteModel, Column, On, Where, Sort, Group> getSortModel() {
         return new Sort();
     }
 

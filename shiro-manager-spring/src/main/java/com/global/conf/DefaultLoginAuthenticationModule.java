@@ -1,7 +1,5 @@
 package com.global.conf;
 
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.exception.UnimplementedInterfaceException;
 import com.shiro.filter.RequestHandler;
 import com.shiro.model.JurRoleResModel;
@@ -25,6 +23,8 @@ import pub.avalon.holygrail.response.utils.ResultUtil;
 import pub.avalon.holygrail.response.views.ExceptionView;
 import pub.avalon.holygrail.response.views.ModelView;
 import pub.avalon.holygrail.utils.StringUtil;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -77,7 +77,7 @@ public class DefaultLoginAuthenticationModule implements LoginAuthenticationModu
     public Set<String> getRoles(ShiroUser certificate) {
         Set<String> roles = new HashSet<>();
         for (String roleUserTableName : ShiroConfig.ROLE_USER_TABLE_NAMES) {
-            List<String> list = this.jdbcEngine.queryForList(String.class, MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+            List<String> list = this.jdbcEngine.queryForList(String.class, MySqlDynamicEngine.query(roleUserTableName, JurRoleUserModel.class)
                     .column(JurRoleUserModel.Column::role)
                     .where((condition, mainTable) -> condition
                             .and(mainTable.userId().equalTo(certificate.getId()))));
@@ -90,7 +90,7 @@ public class DefaultLoginAuthenticationModule implements LoginAuthenticationModu
     public Set<String> getUrls(ShiroUser certificate, Set<String> roles) {
         Set<String> urls = new HashSet<>();
         for (String roleResTableName : ShiroConfig.ROLE_RES_TABLE_NAMES) {
-            List<String> list = this.jdbcEngine.queryForList(String.class, MySqlEngine.main(roleResTableName, JurRoleResModel.class)
+            List<String> list = this.jdbcEngine.queryForList(String.class, MySqlDynamicEngine.query(roleResTableName, JurRoleResModel.class)
                     .column(JurRoleResModel.Column::resUrl)
                     .where((condition, mainTable) -> condition
                             .and(mainTable.role().inS(roles))));

@@ -27,7 +27,7 @@ server:
 logging:
   file: D:/log/my_log.log
   level:
-    com: ERROR
+    pub: ERROR
 #公众号配置
 officialaccounts:
   #用于换取accessToken的url

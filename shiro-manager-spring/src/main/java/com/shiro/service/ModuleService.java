@@ -1,9 +1,6 @@
 package com.shiro.service;
 
-import com.dt.core.bean.FunctionColumnType;
 import com.shiro.model.*;
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.bean.ZuulRoute;
 import com.shiro.entity.ZuulRoutePost;
 import com.shiro.entity.ZuulRoutePut;
@@ -14,6 +11,9 @@ import pub.avalon.beans.Time;
 import pub.avalon.holygrail.response.beans.Status;
 import pub.avalon.holygrail.response.utils.ExceptionUtil;
 import pub.avalon.holygrail.utils.StringUtil;
+import pub.avalon.sqlhelper.core.beans.FunctionColumnType;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,13 +31,13 @@ public class ModuleService {
     private SpringJdbcEngine jdbcEngine;
 
     public boolean isServiceIdExist(String serviceId) {
-        return this.jdbcEngine.queryCount(MySqlEngine.main(ZuulRouteModel.class)
+        return this.jdbcEngine.queryCount(MySqlDynamicEngine.query(ZuulRouteModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.serviceId().equalTo(serviceId)))) > 0;
     }
 
     public boolean isModuleIdExist(String id) {
-        return this.jdbcEngine.queryCount(MySqlEngine.main(ZuulRouteModel.class)
+        return this.jdbcEngine.queryCount(MySqlDynamicEngine.query(ZuulRouteModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.id().equalTo(id)))) > 0;
     }
@@ -74,7 +74,7 @@ public class ModuleService {
             record.setStatus(Status.NORMAL.name());
         }
 
-        Long index = this.jdbcEngine.queryOne(Long.class, MySqlEngine.main(ZuulRouteModel.class)
+        Long index = this.jdbcEngine.queryColumnOne(1, Long.class, MySqlDynamicEngine.query(ZuulRouteModel.class)
                 .functionColumn(FunctionColumnType.MAX, ZuulRouteModel.Column::index));
         record.setIndex(index == null ? 0 : ++index);
         record.setCreateTime(Time.localDateTimeNow());
@@ -86,25 +86,25 @@ public class ModuleService {
         String roleResTableName = TableUtils.getRoleResTableName(record.getId());
         String roleUserTableName = TableUtils.getRoleUserTableName(record.getId());
 
-        if (this.jdbcEngine.isTableExist(resTableName)) {
+        if (this.jdbcEngine.isTableExist(MySqlDynamicEngine.table(resTableName, JurResModel.class))) {
             ExceptionUtil.throwFailException("资源表 [" + resTableName + "] 已存在, 无法创建");
         }
-        if (this.jdbcEngine.isTableExist(roleTableName)) {
+        if (this.jdbcEngine.isTableExist(MySqlDynamicEngine.table(roleTableName, JurRoleModel.class))) {
             ExceptionUtil.throwFailException("角色表 [" + roleTableName + "] 已存在, 无法创建");
         }
-        if (this.jdbcEngine.isTableExist(roleResTableName)) {
+        if (this.jdbcEngine.isTableExist(MySqlDynamicEngine.table(roleResTableName, JurRoleResModel.class))) {
             ExceptionUtil.throwFailException("角色资源表 [" + roleResTableName + "] 已存在, 无法创建");
         }
-        if (this.jdbcEngine.isTableExist(roleUserTableName)) {
+        if (this.jdbcEngine.isTableExist(MySqlDynamicEngine.table(roleUserTableName, JurRoleUserModel.class))) {
             ExceptionUtil.throwFailException("角色用户表 [" + roleUserTableName + "] 已存在, 无法创建");
         }
 
-        this.jdbcEngine.copyTable(JurResModel.tableName, resTableName);
-        this.jdbcEngine.copyTable(JurRoleModel.tableName, roleTableName);
-        this.jdbcEngine.copyTable(JurRoleResModel.tableName, roleResTableName);
-        this.jdbcEngine.copyTable(JurRoleUserModel.tableName, roleUserTableName);
+        this.jdbcEngine.copyTable(resTableName, false, MySqlDynamicEngine.table(JurResModel.class));
+        this.jdbcEngine.copyTable(roleTableName, false, MySqlDynamicEngine.table(JurRoleModel.class));
+        this.jdbcEngine.copyTable(roleResTableName, false, MySqlDynamicEngine.table(JurRoleResModel.class));
+        this.jdbcEngine.copyTable(roleUserTableName, false, MySqlDynamicEngine.table(JurRoleUserModel.class));
 
-        int count = this.jdbcEngine.insertRecordSelective(record, ZuulRouteModel.class);
+        int count = this.jdbcEngine.insertJavaBeanSelective(record, MySqlDynamicEngine.insert(ZuulRouteModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("新增模块失败");
         }
@@ -114,7 +114,8 @@ public class ModuleService {
         if (StringUtil.isEmpty(primaryKeyValue)) {
             ExceptionUtil.throwFailException("未指定主键值");
         }
-        ZuulRoute route = this.jdbcEngine.queryByPrimaryKey(primaryKeyValue, ZuulRoute.class, MySqlEngine.column(ZuulRouteModel.class).column(ZuulRouteModel.Column::id));
+        ZuulRoute route = this.jdbcEngine.queryByPrimaryKey(primaryKeyValue, ZuulRoute.class, MySqlDynamicEngine.query(ZuulRouteModel.class)
+                .column(ZuulRouteModel.Column::id));
         if (route == null) {
             ExceptionUtil.throwFailException("该模块记录不存在");
         }
@@ -130,7 +131,7 @@ public class ModuleService {
         route.setUpdateTime(Time.localDateTimeNow());
         route.setUpdateTimeStamp(Time.timeStamp());
 
-        int count = this.jdbcEngine.updateRecordByPrimaryKeySelective(primaryKeyValue, route, ZuulRouteModel.class);
+        int count = this.jdbcEngine.updateJavaBeanByPrimaryKeySelective(primaryKeyValue, route, MySqlDynamicEngine.update(ZuulRouteModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("更新模块失败");
         }
@@ -140,7 +141,8 @@ public class ModuleService {
         if (StringUtil.isEmpty(primaryKeyValue)) {
             ExceptionUtil.throwFailException("未指定主键值");
         }
-        ZuulRoute route = this.jdbcEngine.queryByPrimaryKey(primaryKeyValue, ZuulRoute.class, MySqlEngine.column(ZuulRouteModel.class).column(ZuulRouteModel.Column::id));
+        ZuulRoute route = this.jdbcEngine.queryByPrimaryKey(primaryKeyValue, ZuulRoute.class, MySqlDynamicEngine.query(ZuulRouteModel.class)
+                .column(ZuulRouteModel.Column::id));
         if (route == null) {
             ExceptionUtil.throwFailException("该模块记录不存在");
         }
@@ -156,12 +158,12 @@ public class ModuleService {
         String roleResTableNameBak = TableUtils.getRenameTableName(roleResTableName);
         String roleUserTableNameBak = TableUtils.getRenameTableName(roleUserTableName);
 
-        this.jdbcEngine.renameTable(resTableName, resTableNameBak);
-        this.jdbcEngine.renameTable(roleTableName, roleTableNameBak);
-        this.jdbcEngine.renameTable(roleResTableName, roleResTableNameBak);
-        this.jdbcEngine.renameTable(roleUserTableName, roleUserTableNameBak);
+        this.jdbcEngine.renameTable(resTableNameBak, MySqlDynamicEngine.table(resTableName, JurResModel.class));
+        this.jdbcEngine.renameTable(roleTableNameBak, MySqlDynamicEngine.table(roleTableName, JurRoleModel.class));
+        this.jdbcEngine.renameTable(roleResTableNameBak, MySqlDynamicEngine.table(roleResTableName, JurRoleResModel.class));
+        this.jdbcEngine.renameTable(roleUserTableNameBak, MySqlDynamicEngine.table(roleUserTableName, JurRoleUserModel.class));
 
-        int count = this.jdbcEngine.deleteByPrimaryKey(primaryKeyValue, ZuulRouteModel.class);
+        int count = this.jdbcEngine.deleteByPrimaryKey(primaryKeyValue, MySqlDynamicEngine.delete(ZuulRouteModel.class));
         if (count != 1) {
             ExceptionUtil.throwFailException("删除模块失败");
         }

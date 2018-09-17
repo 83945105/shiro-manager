@@ -1,9 +1,9 @@
 package com.global.conf;
 
-import com.dt.jdbc.core.SpringJdbcEngine;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 /**
  * @author 白超

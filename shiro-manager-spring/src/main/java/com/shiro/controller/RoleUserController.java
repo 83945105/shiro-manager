@@ -1,7 +1,5 @@
 package com.shiro.controller;
 
-import com.dt.core.engine.MySqlEngine;
-import com.dt.jdbc.core.SpringJdbcEngine;
 import com.shiro.api.RoleUserApi;
 import com.shiro.entity.JurRoleUserGet;
 import com.shiro.model.JurRoleUserModel;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pub.avalon.holygrail.response.utils.DataViewUtil;
 import pub.avalon.holygrail.response.views.DataView;
+import pub.avalon.sqlhelper.factory.MySqlDynamicEngine;
+import pub.avalon.sqlhelper.spring.core.SpringJdbcEngine;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +35,7 @@ public class RoleUserController implements RoleUserApi {
     @RequestMapping(value = "/get/roleUserListByUserId/{userId}", method = RequestMethod.GET)
     public DataView getRoleUserListByUserId(@PathVariable String userId, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String roleUserTableName = TableUtils.getRoleUserTableName(request);
-        List<JurRoleUserGet> list = this.jdbcEngine.queryForList(JurRoleUserGet.class, MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+        List<JurRoleUserGet> list = this.jdbcEngine.queryForList(JurRoleUserGet.class, MySqlDynamicEngine.query(roleUserTableName, JurRoleUserModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.userId().equalTo(userId))));
         /*获取第三方数据开始*/
@@ -54,7 +54,7 @@ public class RoleUserController implements RoleUserApi {
     @RequestMapping(value = "/get/roleUserListByRoleId/{roleId}", method = RequestMethod.GET)
     public DataView getRoleUserListByRoleId(@PathVariable String roleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String roleUserTableName = TableUtils.getRoleUserTableName(request);
-        List<JurRoleUserGet> list = this.jdbcEngine.queryForList(JurRoleUserGet.class, MySqlEngine.main(roleUserTableName, JurRoleUserModel.class)
+        List<JurRoleUserGet> list = this.jdbcEngine.queryForList(JurRoleUserGet.class, MySqlDynamicEngine.query(roleUserTableName, JurRoleUserModel.class)
                 .where((condition, mainTable) -> condition
                         .and(mainTable.roleId().equalTo(roleId))));
         /*获取第三方数据开始*/

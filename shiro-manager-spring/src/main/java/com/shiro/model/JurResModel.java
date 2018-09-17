@@ -1,11 +1,12 @@
 package com.shiro.model;
 
-import com.dt.core.bean.*;
-import com.dt.core.norm.Model;
+import pub.avalon.sqlhelper.core.beans.*;
+import pub.avalon.sqlhelper.core.norm.Model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@SuppressWarnings("all")
 public final class JurResModel implements Model<JurResModel, JurResModel.Column, JurResModel.On, JurResModel.Where, JurResModel.Sort, JurResModel.Group> {
 
     /**
@@ -20,7 +21,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
     /**
      * 主键名
      */
-    public static final String primaryKeyName = "ID";
+    public static final String primaryKeyName = "id";
     /**
      * 主键别名
      */
@@ -45,11 +46,11 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
      */
     public static final String name_alias = "name";
     /**
-     * 类型
+     * 资源类型
      */
     public static final String type = "type";
     /**
-     * 类型
+     * 资源类型
      */
     public static final String type_alias = "type";
     /**
@@ -260,7 +261,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
     }
 
     @Override
-    public ColumnModel<JurResModel, Column, On, Where, Sort, Group> getColumn() {
+    public ColumnModel<JurResModel, Column, On, Where, Sort, Group> getColumnModel() {
         return new Column();
     }
 
@@ -321,7 +322,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
         }
 
         /**
-         * 类型
+         * 资源类型
          */
         public Column type() {
             this.addColumnAlias(JurResModel.type, JurResModel.type_alias);
@@ -329,7 +330,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
         }
 
         /**
-         * 类型
+         * 资源类型
          * @param alias 别名
          */
         public Column type(String alias) {
@@ -578,7 +579,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
     }
 
     @Override
-    public OnModel<JurResModel, Column, On, Where, Sort, Group> getOn() {
+    public OnModel<JurResModel, Column, On, Where, Sort, Group> getOnModel() {
         return new On();
     }
 
@@ -609,7 +610,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
         }
 
         /**
-         * 类型
+         * 资源类型
          */
         public OnBuilder<JurResModel, Column, On, Where, Sort, Group> type() {
             return this.onBuilder.handler(JurResModel.tableName, JurResModel.tableAlias, JurResModel.type);
@@ -716,7 +717,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
     }
 
     @Override
-    public Where getWhere() {
+    public Where getWhereModel() {
         return new Where();
     }
 
@@ -747,7 +748,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
         }
 
         /**
-         * 类型
+         * 资源类型
          */
         public WhereBuilder<JurResModel, Column, On, Where, Sort, Group> type() {
             return this.whereBuilder.handler(JurResModel.tableName, JurResModel.tableAlias, JurResModel.type);
@@ -854,7 +855,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
     }
 
     @Override
-    public GroupModel<JurResModel, Column, On, Where, Sort, Group> getGroup() {
+    public GroupModel<JurResModel, Column, On, Where, Sort, Group> getGroupModel() {
         return new Group();
     }
 
@@ -888,7 +889,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
         }
 
         /**
-         * 类型
+         * 资源类型
          */
         public Group type() {
             this.addColumn(JurResModel.type);
@@ -1010,7 +1011,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
     }
 
     @Override
-    public SortModel<JurResModel, Column, On, Where, Sort, Group> getSort() {
+    public SortModel<JurResModel, Column, On, Where, Sort, Group> getSortModel() {
         return new Sort();
     }
 
@@ -1041,7 +1042,7 @@ public final class JurResModel implements Model<JurResModel, JurResModel.Column,
         }
 
         /**
-         * 类型
+         * 资源类型
          */
         public SortBuilder<JurResModel, Column, On, Where, Sort, Group> type() {
             return this.sortBuilder.handler(JurResModel.type);
